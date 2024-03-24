@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041559618983",
+    "project_id": "the-dram-club-3eb71",
+    "storage_bucket": "the-dram-club-3eb71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041559618983:android:923b16c563cad741b36282",
+        "android_client_info": {
+          "package_name": "com.example.the_dram_club"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQTWtgqGWeX9yuNlxOq9gVLL3yG1Oibxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
