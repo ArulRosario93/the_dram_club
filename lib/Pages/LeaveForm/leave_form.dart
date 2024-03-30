@@ -15,7 +15,7 @@ class LeaveForm extends StatefulWidget {
 
 class _LeaveFormState extends State<LeaveForm> {
   int _selectedIndex = 0;
-  PageController _pageController = PageController(
+  final PageController _pageController = PageController(
     initialPage: 0,
     keepPage: true,
   );
@@ -46,59 +46,59 @@ class _LeaveFormState extends State<LeaveForm> {
             children: [
               Expanded(
                   flex: 1,
-                  child: Container(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                          // borderRadius: BorderRadius.circular(10),
-                          // color: _selectedIndex == 0
-                          //     ? Colors.grey[300]
-                          //     : Colors.white,
-                          border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 0
-                                ? Colors.grey[700]!
-                                : Colors.white,
-                            width: 2),
-                      )),
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () => handlePage(0),
+                  child: InkWell(
+                      onTap: () => handlePage(0),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 15, bottom: 15),
+                        decoration: BoxDecoration(
+                            // borderRadius: BorderRadius.circular(10),
+                            // color: _selectedIndex == 0
+                            //     ? Colors.grey[300]
+                            //     : Colors.white,
+                            border: Border(
+                          bottom: BorderSide(
+                              color: _selectedIndex == 0
+                                  ? Colors.grey[700]!
+                                  : Colors.white,
+                              width: 2),
+                        )),
+                        alignment: Alignment.center,
                         child: Text(
                           "Student Form",
                           style: GoogleFonts.montserrat(
                               color: _selectedIndex == 0
                                   ? Colors.black
                                   : Colors.grey[700]!,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500),
                         ),
                       ))),
               Expanded(
                   flex: 1,
-                  child: Container(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                          // borderRadius: BorderRadius.circular(10),
-                          // color: _selectedIndex == 1
-                          //     ? Colors.grey[300]
-                          //     : Colors.white,
-                          border: Border(
-                        bottom: BorderSide(
-                            color: _selectedIndex == 1
-                                ? Colors.grey[700]!
-                                : Colors.white,
-                            width: 2),
-                      )),
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () => handlePage(1),
+                  child: InkWell(
+                      onTap: () => handlePage(1),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 15, bottom: 15),
+                        decoration: BoxDecoration(
+                            // borderRadius: BorderRadius.circular(10),
+                            // color: _selectedIndex == 1
+                            //     ? Colors.grey[300]
+                            //     : Colors.white,
+                            border: Border(
+                          bottom: BorderSide(
+                              color: _selectedIndex == 1
+                                  ? Colors.grey[700]!
+                                  : Colors.white,
+                              width: 2),
+                        )),
+                        alignment: Alignment.center,
                         child: Text(
                           "All Forms",
                           style: GoogleFonts.montserrat(
                               color: _selectedIndex == 1
                                   ? Colors.black
                                   : Colors.grey[700]!,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500),
                         ),
                       ))),

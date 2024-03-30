@@ -16,7 +16,7 @@ class _FormItemState extends State<FormItem> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            insetPadding: const EdgeInsets.all(0),
+            insetPadding: const EdgeInsets.all(10),
             contentPadding: const EdgeInsets.all(20),
             backgroundColor: Colors.black87,
             title: Text(
@@ -26,7 +26,11 @@ class _FormItemState extends State<FormItem> {
             ),
             content: Container(
               alignment: Alignment.center,
-              height: 200,
+              // height: 290,
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(10),
+              // ),
+              constraints: const BoxConstraints(minHeight: 290, maxHeight: 300),
               // margin: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,19 +70,71 @@ class _FormItemState extends State<FormItem> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text("Attendance Percentage: ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.green,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600)),
+                      Text("80% ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600)),
+                      Text("(valid)",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.green,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   Text(
-                    "Applied for OD on 20th August 2021",
+                    "Applied OD on 20th August 2021",
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Going to Hospital",
+                    "For: Going to Hospital for Checkup. Then going to home. ",
+                    style: GoogleFonts.montserrat(
+                        color: const Color.fromARGB(216, 255, 255, 255),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        "Rejected by: ",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text("Arul Rosario ",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400)),
+                      Expanded(
+                        child: Text("(Higher Authority)",
+                            style: GoogleFonts.montserrat(
+                                color: Colors.white70,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Reason: Going to Hospital is not a valid reason.",
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400),
                   ),
                 ],
@@ -89,7 +145,10 @@ class _FormItemState extends State<FormItem> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Close'),
+                child: Text(
+                  'Done',
+                  style: GoogleFonts.montserrat(color: Colors.white),
+                ),
               ),
             ],
           );
@@ -100,45 +159,50 @@ class _FormItemState extends State<FormItem> {
   Widget build(BuildContext context) {
     return Container(
       // duration: const Duration(milliseconds: 300),
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      // padding: const EdgeInsets.all(10.0),
       margin: const EdgeInsets.only(bottom: 20),
       // color: Colors.teal,
+
       alignment: Alignment.center,
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: handleExpand,
-        child: Row(
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              width: expanded ? 20 : 40,
-              height: expanded ? 20 : 40,
-              decoration: const BoxDecoration(
-                  // color: Colors.white,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'),
-                      fit: BoxFit.cover)),
-            ),
-            Expanded(
-              child: ListTile(
-                title: Text(
-                  "Arul Rosario",
-                  style: GoogleFonts.montserrat(
-                      fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                subtitle: Text(
-                  "Going to Hospital",
-                  style: GoogleFonts.montserrat(
-                      fontSize: 14, fontWeight: FontWeight.w400),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+          child: Row(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: expanded ? 20 : 40,
+                height: expanded ? 20 : 40,
+                decoration: const BoxDecoration(
+                    // color: Colors.white,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'),
+                        fit: BoxFit.cover)),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: Text(
+                    "Arul Rosario",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  subtitle: Text(
+                    "Going to Hospital",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
-            ),
-            const Icon(
-              Icons.rule,
-              color: Colors.red,
-            )
-          ],
+              const Icon(
+                Icons.rule,
+                color: Colors.red,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -22,7 +22,6 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     List pages = [
@@ -45,18 +44,18 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
               pages[selectedIndex],
               //Submit is below
               Expanded(child: Container()),
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.blue.shade400,
-                      Colors.blue.shade600,
-                    ]),
-                    borderRadius: BorderRadius.circular(10)),
-                child: GestureDetector(
-                  onTap: gotonextPage,
+              GestureDetector(
+                onTap: gotonextPage,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        Colors.blue.shade400,
+                        Colors.blue.shade600,
+                      ]),
+                      borderRadius: BorderRadius.circular(10)),
                   child: Text(
                       selectedIndex == 0 ? "Create and Continue" : "Finish",
                       style: GoogleFonts.montserrat(

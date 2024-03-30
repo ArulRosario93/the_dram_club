@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_dram_club/Pages/GetStarted/get_started.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
+import 'package:the_dram_club/Pages/Notifications/notification.dart';
 import 'package:the_dram_club/Utils/hovering_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   void handleGotogetStarted() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const GetStarted()));
+        context, MaterialPageRoute(builder: (context) => const NotificationPage()));
   }
 
   @override

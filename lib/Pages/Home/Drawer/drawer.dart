@@ -16,7 +16,7 @@ class DrawerMain extends StatelessWidget {
     }
 
     return Drawer(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blue,
       child: SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +33,7 @@ class DrawerMain extends StatelessWidget {
             flex: 1,
             child: SingleChildScrollView(
               child: Container(
-                color: Colors.black,
+                color: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Column(
@@ -51,7 +51,8 @@ class DrawerMain extends StatelessWidget {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      splashColor: Colors.greenAccent,
+                      // splashColor: Colors.greenAccent,
+                      splashColor: Colors.grey[800],
                       subtitle: Text(
                         "Home Page should be the best how you sodbaba",
                         style: GoogleFonts.montserrat(
@@ -74,7 +75,7 @@ class DrawerMain extends StatelessWidget {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      splashColor: Colors.greenAccent,
+                      splashColor: Colors.black,
                       subtitle: Text(
                         "Home Page should be the best how you sodbaba",
                         style: GoogleFonts.montserrat(
@@ -97,7 +98,7 @@ class DrawerMain extends StatelessWidget {
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      splashColor: Colors.greenAccent,
+                      splashColor: Colors.black,
                       subtitle: Text(
                         "Home Page should be the best how you sodbaba",
                         style: GoogleFonts.montserrat(

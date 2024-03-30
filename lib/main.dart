@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:the_dram_club/Pages/Channel/channel.dart';
 import 'package:the_dram_club/Pages/Home/home.dart';
 import 'firebase_options.dart';
 
@@ -18,7 +19,7 @@ class Dram extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       
-      home: HomePage(),
+      home: Channel(),
     );
   }
 }
