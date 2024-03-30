@@ -13,7 +13,7 @@ class Channel extends StatefulWidget {
 }
 
 class _ChannelState extends State<Channel> {
-  int _selectedPage = 0;
+  // int _selectedPage = 0;
   final PageController _pageController = PageController(
     initialPage: 0,
     keepPage: true,
@@ -21,7 +21,7 @@ class _ChannelState extends State<Channel> {
 
   void handlePageSelection(int index) {
     setState(() {
-      _selectedPage = index;
+      // _selectedPage = index;
       // setState(() {
       _pageController.animateToPage(index,
           duration: Durations.short1, curve: Curves.easeIn);
