@@ -7,12 +7,17 @@ class ChatControllerParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String lastDate = "";
+    void handleLastDate(String date){
+      lastDate = date;
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: msg.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        return ChatControllerChild(msg: msg[index]);
+        return ChatControllerChild(msg: msg[index], handleLastDate: handleLastDate, lastDate: lastDate);
       },
     );
   }

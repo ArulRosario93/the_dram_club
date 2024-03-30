@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_controller.dart';
 
 class Channelchat extends StatelessWidget {
