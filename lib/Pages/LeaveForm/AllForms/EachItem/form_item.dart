@@ -24,14 +24,7 @@ class _FormItemState extends State<FormItem> {
               style: GoogleFonts.montserrat(
                   color: Colors.red, fontSize: 22, fontWeight: FontWeight.w600),
             ),
-            content: Container(
-              alignment: Alignment.center,
-              // height: 290,
-              // decoration: BoxDecoration(
-              //   borderRadius: BorderRadius.circular(10),
-              // ),
-              constraints: const BoxConstraints(minHeight: 290, maxHeight: 300),
-              // margin: const EdgeInsets.only(left: 20, right: 20),
+            content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
