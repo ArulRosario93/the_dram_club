@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/ChatControllerParent/chat_controller_parent.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_controller.dart';
 
 class Channelchat extends StatelessWidget {
@@ -31,13 +32,13 @@ class Channelchat extends StatelessWidget {
         {
           "msg": "I am fine",
           "sender": "other",
-          'date': '12/12/2021',
+          'date': '13/12/2021',
           'time': '12:05'
         },
         {
           "msg": "I am fine",
           "sender": "other",
-          'date': '12/12/2021',
+          'date': '13/12/2021',
           'time': '12:05'
         }
       ],
@@ -45,13 +46,13 @@ class Channelchat extends StatelessWidget {
         {
           "msg": "How are you?",
           "sender": "me",
-          'date': '12/12/2021',
+          'date': '13/12/2021',
           'time': '12:04'
         },
         {
           "msg": "I am fine",
           "sender": "other",
-          'date': '12/12/2021',
+          'date': '13/12/2021',
           'time': '12:05'
         },
         {"msg": "Hello", "sender": "me", 'date': '12/12/2021', 'time': '12:06'},
@@ -59,24 +60,24 @@ class Channelchat extends StatelessWidget {
         {
           "msg": "How are you?",
           "sender": "me",
-          'date': '12/12/2021',
+          'date': '14/12/2021',
           'time': '12:04'
         },
         {
           "msg": "I am fine",
           "sender": "other",
-          'date': '12/12/2021',
+          'date': '14/12/2021',
           'time': '12:05'
         },
         {
           "msg": "I am fine",
           "sender": "other",
-          'date': '12/12/2021',
+          'date': '14/12/2021',
           'time': '12:05'
         },
-        {"msg": "Hello", "sender": "me", 'date': '12/12/2021', 'time': '12:06'},
-        {"msg": "Hi", "sender": "other", 'date': '12/12/2021', 'time': '12:07'},
-        {"msg": "Hi", "sender": "other", 'date': '12/12/2021', 'time': '12:07'}
+        {"msg": "Hello", "sender": "me", 'date': '14/12/2021', 'time': '12:06'},
+        {"msg": "Hi", "sender": "other", 'date': '15/12/2021', 'time': '12:07'},
+        {"msg": "Hi", "sender": "other", 'date': '15/12/2021', 'time': '12:07'}
       ]
     ];
 
@@ -84,7 +85,7 @@ class Channelchat extends StatelessWidget {
       color: Colors.red[100],
       child: Column(
         children: [
-          Expanded(child: ChatController(msg: msg)),
+          Expanded(child: ChatControllerParent(msg: msg)),
           Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(

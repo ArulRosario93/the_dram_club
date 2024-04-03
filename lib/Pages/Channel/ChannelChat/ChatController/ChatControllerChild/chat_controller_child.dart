@@ -4,13 +4,10 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatItem/chat_item.dart'
 
 class ChatControllerChild extends StatelessWidget {
   final List msg;
-  final Function handleLastDate;
-  final String lastDate;
-  const ChatControllerChild(
-      {super.key,
-      required this.msg,
-      required this.handleLastDate,
-      required this.lastDate});
+  const ChatControllerChild({
+    super.key,
+    required this.msg,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +22,16 @@ class ChatControllerChild extends StatelessWidget {
           if (index > 0 && msg[index]["sender"] == msg[index - 1]["sender"]) {
             sameUser = true;
           }
-          if (index == 0 && lastDate == "") {
-            handleLastDate(msg[index]["date"]);
+
+          //Checking the date
+
+          // and check the round is two
+          if (index == 0) {
             samedate = true;
-          } else if (lastDate == msg[index]["date"]) {
-            // samedate = true;
-          }else{
-            handleLastDate(msg[index]["date"]);
+          } else {
+            if (index > 0 && msg[index]["date"] != msg[index - 1]["date"]) {
+              samedate = true;
+            }
           }
 
           if (index < msg.length - 1 &&
@@ -44,7 +44,7 @@ class ChatControllerChild extends StatelessWidget {
                 ? CrossAxisAlignment.end
                 : CrossAxisAlignment.start,
             children: [
-              !samedate ? ChatDate(date: msg[index]["date"]) : const SizedBox(),
+              samedate ? ChatDate(date: msg[index]["date"]) : const SizedBox(),
               ChatItem(
                   sameUser: sameUser,
                   msg: msg[index]["msg"],
