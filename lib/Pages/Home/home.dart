@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       ),
 
       // 0, 1, 2
-      const LeaveForm(role: 2, strict: 2,),
+      const LeaveForm(role: 1, strict: 2,),
       // "Profile",
     ];
 

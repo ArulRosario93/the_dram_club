@@ -13,6 +13,7 @@ class ChatControllerChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
           bool sameUser = false;
@@ -55,6 +56,7 @@ class ChatControllerChild extends StatelessWidget {
                   date: msg[index]["date"]),
             ],
           );
+          
         },
         itemCount: msg.length);
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Pages/LeaveForm/AllForms/all_forms.dart';
 import 'package:the_dram_club/Pages/LeaveForm/StudentForm/studnet_form.dart';
+import 'package:the_dram_club/Pages/LeaveForm/TeacherForm/teacher_form.dart';
 
 class LeaveForm extends StatefulWidget {
   final int role;
@@ -32,7 +33,7 @@ class _LeaveFormState extends State<LeaveForm> {
   Widget build(BuildContext context) {
     List<Widget> Pages = [
       // Student Form/ Teacher Form
-      StudentForm(),
+      widget.role == 0 || widget.role == 1? TeacherForm(): StudentForm(),
 
       //Student form or All Forms
       AllForms(),
