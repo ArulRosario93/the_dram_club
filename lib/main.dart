@@ -21,7 +21,7 @@ class Dram extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       
-      home: HomePage(),
+      home: Channel(),
     );
   }
 }
