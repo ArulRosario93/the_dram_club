@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
+import 'package:the_dram_club/Pages/Home/home.dart';
 import 'package:the_dram_club/Pages/SignIn/sign_in.dart';
 import 'package:the_dram_club/Utils/get_info.dart';
 
@@ -13,12 +15,27 @@ class SignUp extends StatelessWidget {
     final TextEditingController password = TextEditingController();
     final TextEditingController confirmPassword = TextEditingController();
 
+    void handleSignUnEmailandPass() async {
+      print(emailAdress.text);
+      print(password.text);
+      String res = await AuthServices()
+          .signUpWithEmailAndPassword(emailAdress.text, password.text);
+      if (res == "SUCCESS") {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign in failed: $res'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+
     void handleNavigatetoSignIn() {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SignIn(),
-          ));
+          context, MaterialPageRoute(builder: (context) => const SignIn()));
     }
 
     return Scaffold(
@@ -81,19 +98,22 @@ class SignUp extends StatelessWidget {
                 style: GoogleFonts.montserrat(
                     fontSize: 12, fontWeight: FontWeight.w500)),
             const SizedBox(height: 20),
-            Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 75, 62, 252),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
-                "Get Started",
-                style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: Colors.white),
+            GestureDetector(
+              onTap: handleSignUnEmailandPass,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 75, 62, 252),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
+                child: Text(
+                  "Get Started",
+                  style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
               ),
             ),
             const SizedBox(height: 10),

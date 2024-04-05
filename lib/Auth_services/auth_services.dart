@@ -5,33 +5,91 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future signUpWithEmailAndPassword(String email, String password) async {
+  // User DB architecture
+  // Attandance-Record: ""
+  // Direct-Messages: []
+  // Email-ID: ""
+  // Leave-Record: ""
+  // Name: ""
+
+  // Notifications: []
+  // Workspace: [
+  //  {
+  //  "Name": "",
+  //  "Role": "",
+  //  "Workspace-ID": ""
+  //  "last-visited": true,
+  // }
+  // ]
+  // profile-file: ""
+
+  Future<bool> userExist(String emailID) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(emailID)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  Future<String> signUpWithEmailAndPassword(
+      String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      return user;
+      FirebaseFirestore.instance.collection("Users").doc(user.email).set({
+        "Name": user.displayName,
+        "Email-ID": user.email,
+        "UID": user.uid,
+        "profilePic": user.photoURL,
+        "Attandance-Record": "",
+        "Direct-Messages": [],
+        "Leave-Record": "",
+        "Notifications": [],
+        "Workspace": [],
+      });
+      return "SUCCESS";
     } catch (e) {
-      // print(e.toString());
+      return e.toString();
     }
   }
 
   //Google Sign in
-  Future signInWithGoogle() async {
+  Future<String> signInWithGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? account = await googleSignIn.signIn();
       if (account == null) {
-        return null;
+        return "No Account Founded";
       }
       UserCredential result = await _auth.signInWithCredential(
           GoogleAuthProvider.credential(
               idToken: (await account.authentication).idToken,
               accessToken: (await account.authentication).accessToken));
       User user = result.user!;
-      return user;
+      if (await userExist(user.email!)) {
+        return "SUCCESS";
+      } else {
+        FirebaseFirestore.instance.collection("Users").doc(user.email).set({
+          "Name": user.displayName,
+          "Email-ID": user.email,
+          "UID": user.uid,
+          "profilePic": user.photoURL,
+          "Attandance-Record": "",
+          "Direct-Messages": [],
+          "Leave-Record": "",
+          "Notifications": [],
+          "Workspace": [],
+        });
+      }
+      return "SUCCESS";
     } catch (e) {
-      // print(e.toString());
+      return e.toString();
     }
   }
 
@@ -42,7 +100,8 @@ class AuthServices {
       User user = result.user!;
       return user;
     } catch (e) {
-      // print(e.toString());
+      print(e.toString());
+      return e.toString();
     }
   }
 

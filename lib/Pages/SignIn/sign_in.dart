@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
+import 'package:the_dram_club/Pages/Home/home.dart';
 import 'package:the_dram_club/Utils/get_info.dart';
 
 class SignIn extends StatelessWidget {
@@ -15,9 +18,28 @@ class SignIn extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    void hangleGSignIn() async {
+      String res = await AuthServices().signInWithGoogle();
+      // print(object)
+      print(res);
+      if (res == "SUCCESS") {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+      } else {
+        // snackbar to show the error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign in failed: $res'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
@@ -99,27 +121,30 @@ class SignIn extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(CupertinoIcons.game_controller),
-                      const SizedBox(width: 10),
-                      Text(
-                        "Sign In with Google",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: const Color.fromARGB(255, 75, 62, 252)),
-                      ),
-                    ],
-                  )),
+              GestureDetector(
+                onTap: hangleGSignIn,
+                child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(CupertinoIcons.game_controller),
+                        const SizedBox(width: 10),
+                        Text(
+                          "Sign In with Google",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: const Color.fromARGB(255, 75, 62, 252)),
+                        ),
+                      ],
+                    )),
+              ),
             ],
           ),
         ),

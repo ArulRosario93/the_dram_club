@@ -40,7 +40,6 @@ dependencies:
   percent_indicator: ^4.2.3
   swipe_widget: ^0.0.2+1
   vibration: ^1.8.4
-  vibration_web: ^1.6.6
 
 dev_dependencies:
   flutter_lints: ^3.0.0

@@ -55,7 +55,7 @@ class ChatItem extends StatelessWidget {
                 //       fontSize: 22,
                 //       fontWeight: FontWeight.w600),
                 // ),
-                content: const UserProfile(),
+                content: const UserProfile(casualook: false,),
               ));
     }
 
