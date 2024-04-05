@@ -23,23 +23,40 @@ class ChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void handleUserProfile() {
-      showModalBottomSheet<void>(
-        context: context,
-        scrollControlDisabledMaxHeightRatio: .8,
-        builder: (BuildContext context) {
-          return Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: const UserProfile(),
-          );
-        },
-      );
+      // showModalBottomSheet<void>(
+      //   context: context,
+      //   scrollControlDisabledMaxHeightRatio: .8,
+      //   builder: (BuildContext context) {
+      //     return Container(
+      //       decoration: const BoxDecoration(
+      //         color: Colors.white,
+      //         borderRadius: BorderRadius.only(
+      //           topLeft: Radius.circular(20),
+      //           topRight: Radius.circular(20),
+      //         ),
+      //       ),
+      //       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+      //       child: const UserProfile(),
+      //     );
+      //   },
+      // );
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                insetPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.all(10),
+                backgroundColor: Colors.grey.shade200,
+                // title: Text(
+                //   'Form Rejected',
+                //   style: GoogleFonts.montserrat(
+                //       color: Colors.red,
+                //       fontSize: 22,
+                //       fontWeight: FontWeight.w600),
+                // ),
+                content: const UserProfile(),
+              ));
     }
 
     return Row(
@@ -56,7 +73,9 @@ class ChatItem extends StatelessWidget {
                   child: const CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.blue,
-                    backgroundImage: NetworkImage("https://i.pinimg.com/236x/c7/e9/36/c7e9362f57ee015410dcf3dbb5f6178a.jpg",),
+                    backgroundImage: NetworkImage(
+                      "https://i.pinimg.com/236x/c7/e9/36/c7e9362f57ee015410dcf3dbb5f6178a.jpg",
+                    ),
                   ),
                 ),
               ),
