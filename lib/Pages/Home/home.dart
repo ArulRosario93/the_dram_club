@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_dram_club/Pages/GetStarted/get_started.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
 import 'package:the_dram_club/Pages/Notifications/notification.dart';
@@ -13,12 +14,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var user;
   int _selectedIndex = 0;
+  dynamic workspace = [];
+  bool loading = true;
+  var curentWorkspace;
 
-  void handleInitialData() {
-    // print("WAITING FOR USER DATA");
-    // var snap = await AuthServices().getCurrentUser();
-    // print(snap);
+  void handleInitialData() async {
+    await AuthServices().getUser().then((value) => {
+          user = value,
+          workspace = value['Workspace'],
+          curentWorkspace = value['Workspace']
+              .firstWhere((element) => element['lastVisited'] == true),
+          loading = false,
+        });
+
+    setState(() {});
   }
 
   void handlePage(int val) {
@@ -28,8 +39,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleGotogetStarted() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const NotificationPage()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const NotificationPage()));
   }
 
   @override
@@ -41,25 +52,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      const Column(
+      Column(
         children: [
-          HoveringWidget(),
-          HoveringWidget(),
+          const HoveringWidget(),
+          const HoveringWidget(),
           Center(
-            child: Text('Welcome to Dram'),
+            child: Text(
+              curentWorkspace?['ID'] == null ? '' : curentWorkspace['ID'],
+              style: GoogleFonts.montserrat(),
+            ),
           ),
         ],
       ),
 
       // 0, 1, 2
-      const LeaveForm(role: 1, strict: 2,),
+      const LeaveForm(
+        role: 1,
+        strict: 2,
+      ),
       // "Profile",
     ];
 
+    if (loading &&
+        curentWorkspace == null &&
+        curentWorkspace?['Name'] == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
-        drawer: const DrawerMain(),
+        drawer: DrawerMain(list: workspace),
         appBar: AppBar(
-          title: const Text('Dram Club'),
+          title: Text(
+            curentWorkspace['Name'],
+            style: GoogleFonts.montserrat(),
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.notifications),

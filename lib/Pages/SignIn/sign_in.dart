@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/Home/home.dart';
@@ -18,10 +19,46 @@ class SignIn extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    void showSnackbar(String text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(text, style: GoogleFonts.montserrat(),),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+
+    void handleSignIn() async {
+      if (emailAdress.text.isEmpty || password.text.isEmpty) {
+        showSnackbar("Please fill all the fields");
+        return;
+      }
+
+      if (!await AuthServices().userExist(emailAdress.text)) {
+        showSnackbar("User does not exist");
+        return;
+      }
+
+      AuthServices()
+          .signInWithEmailAndPassword(emailAdress.text, password.text)
+          .then((value) {
+        if (value == "SUCCESS") {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Sign in failed: $value"),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      });
+    }
+
     void hangleGSignIn() async {
       String res = await AuthServices().signInWithGoogle();
-      // print(object)
-      print(res);
+
       if (res == "SUCCESS") {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -105,19 +142,22 @@ class SignIn extends StatelessWidget {
                                       const Color.fromARGB(255, 75, 62, 252))))
                     ],
                   )),
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 75, 62, 252),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: Text(
-                  "Sign In",
-                  style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Colors.white),
+              GestureDetector(
+                onTap: handleSignIn,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 75, 62, 252),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  child: Text(
+                    "Sign In",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -133,7 +173,12 @@ class SignIn extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(CupertinoIcons.game_controller),
+                        const CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage: NetworkImage(
+                              "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"),
+                          radius: 15,
+                        ),
                         const SizedBox(width: 10),
                         Text(
                           "Sign In with Google",

@@ -3,7 +3,8 @@ import "package:google_fonts/google_fonts.dart";
 import "package:the_dram_club/Pages/CreateWorkspace/create_workspace.dart";
 
 class DrawerMain extends StatelessWidget {
-  const DrawerMain({super.key});
+  final List list;
+  const DrawerMain({super.key, required this.list});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class DrawerMain extends StatelessWidget {
     }
 
     return Drawer(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromARGB(255, 15, 15, 15),
       child: SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,82 +33,58 @@ class DrawerMain extends StatelessWidget {
           Expanded(
             flex: 1,
             child: SingleChildScrollView(
-              child: Container(
-                color: Colors.white,
+              child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Column(
+                  mainAxisAlignment: list.isEmpty
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
-                    ListTile(
-                      leading: Text(
-                        "HO",
-                        style: GoogleFonts.montserrat(color: Colors.white),
+                    if (list.isEmpty)
+                      ListTile(
+                        title: Text(
+                          "Create a Workspace to get started",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
                       ),
-                      title: Text(
-                        "Home",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w600, color: Colors.white),
+                    for (var i in list)
+                      ListTile(
+                        leading: Text(
+                          i['Name'][0] + i['Name'][1],
+                          style: GoogleFonts.montserrat(color: Colors.white),
+                        ),
+                        title: Text(
+                          i['Name'],
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        trailing: Icon(
+                          Icons.more_horiz_rounded,
+                          color: i["lastVisited"] == true
+                              ? Colors.white70
+                              : Colors.grey,
+                        ),
+                        tileColor: i["lastVisited"] == true
+                            ? Colors.grey[700]
+                            : const Color.fromARGB(255, 15, 15, 15),
+                        splashColor: Colors.grey[800],
+                        subtitle: Text(
+                          i['Description'],
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white70),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      // splashColor: Colors.greenAccent,
-                      splashColor: Colors.grey[800],
-                      subtitle: Text(
-                        "Home Page should be the best how you sodbaba",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w400, color: Colors.white70),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    ListTile(
-                      leading: Text(
-                        "HO",
-                        style: GoogleFonts.montserrat(color: Colors.white),
-                      ),
-                      title: Text(
-                        "Home",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      splashColor: Colors.black,
-                      subtitle: Text(
-                        "Home Page should be the best how you sodbaba",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w400, color: Colors.white70),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    ListTile(
-                      leading: Text(
-                        "HO",
-                        style: GoogleFonts.montserrat(color: Colors.white),
-                      ),
-                      title: Text(
-                        "Home",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      splashColor: Colors.black,
-                      subtitle: Text(
-                        "Home Page should be the best how you sodbaba",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w400, color: Colors.white70),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
+                    // const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -118,23 +95,25 @@ class DrawerMain extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                ListTile(
-                  // tileColor: Colors.grey,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  leading: const Icon(
-                    Icons.add,
-                    color: Colors.blue,
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  onTap: createWorkspace,
-                  title: Text(
-                    "Create Workspace",
-                    style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w600, color: Colors.white),
-                  ),
-                ),
+                list.isNotEmpty
+                    ? ListTile(
+                        // tileColor: Colors.grey,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        leading: const Icon(
+                          Icons.add,
+                          color: Colors.blue,
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        onTap: createWorkspace,
+                        title: Text(
+                          "Create Workspace",
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
+                      )
+                    : const SizedBox(),
                 ListTile(
                   // tileColor: Colors.grey,
                   contentPadding:

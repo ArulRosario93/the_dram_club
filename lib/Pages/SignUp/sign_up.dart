@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
@@ -15,11 +14,66 @@ class SignUp extends StatelessWidget {
     final TextEditingController password = TextEditingController();
     final TextEditingController confirmPassword = TextEditingController();
 
+    void showsnackbar(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          content: Text(
+            message,
+            style: GoogleFonts.montserrat(),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+
+    bool handleCheckvalidEmail(String email) {
+      if (RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(email)) {
+        return true;
+      }
+
+      return false;
+    }
+
+    Future<bool> handleUserExits(String email) {
+      return AuthServices().userExist(email);
+    }
+
     void handleSignUnEmailandPass() async {
-      print(emailAdress.text);
-      print(password.text);
+      if (password.text.isEmpty ||
+          emailAdress.text.isEmpty ||
+          confirmPassword.text.isEmpty) {
+        showsnackbar("Please fill all the fields");
+        return;
+      }
+
+      if (!handleCheckvalidEmail(emailAdress.text)) {
+        showsnackbar("Please enter a valid email address");
+        return;
+      }
+
+      if (await handleUserExits(emailAdress.text)) {
+        String res = await AuthServices().userAuthentication(emailAdress.text);
+        showsnackbar("User already exists. Try Signing in with $res");
+        return;
+      }
+
+      if (password.text != confirmPassword.text) {
+        showsnackbar("Password does not match");
+        return;
+      }
+
+      if (password.text.length < 8) {
+        showsnackbar("Password must be atleast 8 characters long");
+        return;
+      }
+
       String res = await AuthServices()
-          .signUpWithEmailAndPassword(emailAdress.text, password.text);
+          .signUpWithEmailAndPassword(emailAdress.text.trim(), password.text);
       if (res == "SUCCESS") {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -127,7 +181,13 @@ class SignUp extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(CupertinoIcons.game_controller),
+                    const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundImage: NetworkImage(
+                          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"),
+                      radius: 15,
+                    ),
                     const SizedBox(width: 10),
                     Text(
                       "Sign Up with Google",

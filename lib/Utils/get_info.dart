@@ -21,6 +21,7 @@ class GetInfo extends StatelessWidget {
       autofocus: autoFocus,
       maxLines: maxLines? 7 : 1,
       minLines: 1,
+      obscureText: hintText == 'Password' || hintText == "Confirm Password" ? true : false,
       maxLength: maxLines? 100 : null,
       textAlign: TextAlign.left,
       style: GoogleFonts.montserrat(color: Colors.black),

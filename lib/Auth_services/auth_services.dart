@@ -29,11 +29,24 @@ class AuthServices {
         .doc(emailID)
         .get()
         .then((value) {
-      if (value.exists) {
+      if (value.exists && value.data()?['Authentications']) {
         return true;
       }
     });
     return false;
+  }
+
+  Future<String> userAuthentication(String emailID) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(emailID)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        return value.data()!["Authentications"];
+      }
+    });
+    return "No Data";
   }
 
   Future<String> signUpWithEmailAndPassword(
@@ -46,11 +59,12 @@ class AuthServices {
         "Name": user.displayName,
         "Email-ID": user.email,
         "UID": user.uid,
-        "profilePic": user.photoURL,
+        "profilePic": "",
         "Attandance-Record": "",
         "Direct-Messages": [],
         "Leave-Record": "",
         "Notifications": [],
+        "Authentications": "Email-Password",
         "Workspace": [],
       });
       return "SUCCESS";
@@ -73,6 +87,9 @@ class AuthServices {
               accessToken: (await account.authentication).accessToken));
       User user = result.user!;
       if (await userExist(user.email!)) {
+        FirebaseFirestore.instance.collection("Users").doc(user.email).update({
+          "Authentications": "Google",
+        });
         return "SUCCESS";
       } else {
         FirebaseFirestore.instance.collection("Users").doc(user.email).set({
@@ -83,6 +100,7 @@ class AuthServices {
           "Attandance-Record": "",
           "Direct-Messages": [],
           "Leave-Record": "",
+          "Authentications": "Google",
           "Notifications": [],
           "Workspace": [],
         });
@@ -100,7 +118,6 @@ class AuthServices {
       User user = result.user!;
       return user;
     } catch (e) {
-      print(e.toString());
       return e.toString();
     }
   }
@@ -118,6 +135,18 @@ class AuthServices {
       return await _auth.signOut();
     } catch (e) {
       // print(e.toString());
+    }
+  }
+
+  Future getUser() async {
+    try {
+      var user = FirebaseFirestore.instance
+          .collection("Users")
+          .doc("itsarrowhere380@gmail.com")
+          .get();
+      return user;
+    } catch (e) {
+      return false;
     }
   }
 

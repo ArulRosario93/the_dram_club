@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:the_dram_club/Controller/authentication.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/ChatControllerParent/chat_controller_parent.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_controller.dart';
 import 'package:the_dram_club/Pages/Channel/channel.dart';
@@ -23,7 +24,7 @@ class Dram extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       
-      home: GetStarted(),
+      home: Authentication(),
     );
   }
 }
