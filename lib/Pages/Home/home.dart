@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
+import 'package:the_dram_club/Pages/Home/ChannelPage/channel_page.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
 import 'package:the_dram_club/Pages/Notifications/notification.dart';
@@ -16,18 +17,29 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var user;
   int _selectedIndex = 0;
-  dynamic workspace = [];
+  var workspace = [];
   bool loading = true;
+
+  var curentWorkspaceShortBrief;
+
   var curentWorkspace;
 
   void handleInitialData() async {
-    await AuthServices().getUser().then((value) => {
-          user = value,
-          workspace = value['Workspace'],
-          curentWorkspace = value['Workspace']
-              .firstWhere((element) => element['lastVisited'] == true),
-          loading = false,
-        });
+    await AuthServices()
+        .getUser()
+        .then((value) => {
+              user = value,
+              workspace = value['Workspace'],
+              curentWorkspaceShortBrief = value['Workspace'].firstWhere(
+                (element) => element['lastVisited'] == true,
+              ),
+              loading = false,
+            })
+        .then((val) => AuthServices()
+            .getWorkspace(curentWorkspaceShortBrief["ID"])
+            .then((value) => {
+                  curentWorkspace = value,
+                }));
 
     setState(() {});
   }
@@ -52,18 +64,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      Column(
-        children: [
-          const HoveringWidget(),
-          const HoveringWidget(),
-          Center(
-            child: Text(
-              curentWorkspace?['ID'] == null ? '' : curentWorkspace['ID'],
-              style: GoogleFonts.montserrat(),
-            ),
-          ),
-        ],
-      ),
+      ChannelPage(list: curentWorkspace?['Channels'] ?? [], workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
 
       // 0, 1, 2
       const LeaveForm(
@@ -74,8 +75,8 @@ class _HomePageState extends State<HomePage> {
     ];
 
     if (loading &&
-        curentWorkspace == null &&
-        curentWorkspace?['Name'] == null) {
+        curentWorkspaceShortBrief == null &&
+        curentWorkspaceShortBrief?['Name'] == null) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         drawer: DrawerMain(list: workspace),
         appBar: AppBar(
           title: Text(
-            curentWorkspace['Name'],
+            curentWorkspaceShortBrief['Name'],
             style: GoogleFonts.montserrat(),
           ),
           actions: [

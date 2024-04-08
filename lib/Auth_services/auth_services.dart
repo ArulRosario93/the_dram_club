@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -55,7 +57,7 @@ class AuthServices {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      FirebaseFirestore.instance.collection("Users").doc(user.email).set({
+      await FirebaseFirestore.instance.collection("Users").doc(user.email).set({
         "Name": user.displayName,
         "Email-ID": user.email,
         "UID": user.uid,
@@ -87,12 +89,18 @@ class AuthServices {
               accessToken: (await account.authentication).accessToken));
       User user = result.user!;
       if (await userExist(user.email!)) {
-        FirebaseFirestore.instance.collection("Users").doc(user.email).update({
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(user.email)
+            .update({
           "Authentications": "Google",
         });
         return "SUCCESS";
       } else {
-        FirebaseFirestore.instance.collection("Users").doc(user.email).set({
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(user.email)
+            .set({
           "Name": user.displayName,
           "Email-ID": user.email,
           "UID": user.uid,
@@ -111,15 +119,24 @@ class AuthServices {
     }
   }
 
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      User user = result.user!;
-      return user;
+      // User user = result.user!;
+      return "SUCCESS";
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future getWorkspace(String ID) async {
+    return await FirebaseFirestore.instance.collection("Workspace").doc(ID).get();
+  }
+
+  Future getChannel(String workspaceID, String channelID) async {
+    return await FirebaseFirestore.instance.collection("Workspace").doc("Something").collection("12345678").doc("Messages").get();
   }
 
   Future resetPassword(String email) async {

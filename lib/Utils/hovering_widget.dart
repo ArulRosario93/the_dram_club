@@ -1,13 +1,25 @@
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_dram_club/Pages/Channel/channel.dart';
 
 class HoveringWidget extends StatelessWidget {
-  const HoveringWidget({super.key});
+  final String title;
+  final String subtitle;
+  final String workspaceID;
+  final list;
+
+  const HoveringWidget(
+      {super.key,
+      required this.title,
+      required this.workspaceID,
+      required this.subtitle,
+      required this.list});
 
   @override
   Widget build(BuildContext context) {
     void handleClick() {
-      // print("Hovering Widget Clicked");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Channel(channel: list, workspaceID: workspaceID)));
     }
 
     return Container(
@@ -25,9 +37,12 @@ class HoveringWidget extends StatelessWidget {
         trailing: const Icon(
           Icons.done_all_rounded,
         ),
-        subtitle: const Text("Click to see the magic"),
+        subtitle: Text(subtitle, style: GoogleFonts.montserrat()),
         onTap: handleClick,
-        title: Text("Hovering Widget", style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),),
+        title: Text(
+          title,
+          style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }

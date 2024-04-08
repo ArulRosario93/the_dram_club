@@ -34,12 +34,12 @@ class SignIn extends StatelessWidget {
         return;
       }
 
-      if (!await AuthServices().userExist(emailAdress.text)) {
-        showSnackbar("User does not exist");
-        return;
-      }
+      // if (await AuthServices().userExist(emailAdress.text) == false) {
+      //   showSnackbar("User does not exist");
+      //   return;
+      // }
 
-      AuthServices()
+      await AuthServices()
           .signInWithEmailAndPassword(emailAdress.text, password.text)
           .then((value) {
         if (value == "SUCCESS") {

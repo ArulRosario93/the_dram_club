@@ -3,7 +3,9 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/ChatContr
 
 class ChatControllerParent extends StatefulWidget {
   final List msg;
-  const ChatControllerParent({super.key, required this.msg});
+  final data;
+  const ChatControllerParent(
+      {super.key, required this.msg, required this.data});
 
   @override
   State<ChatControllerParent> createState() => _ChatControllerParentState();
@@ -11,6 +13,7 @@ class ChatControllerParent extends StatefulWidget {
 
 class _ChatControllerParentState extends State<ChatControllerParent> {
   ScrollController _scrollController = ScrollController();
+  bool loaded = false;
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -27,15 +30,23 @@ class _ChatControllerParentState extends State<ChatControllerParent> {
 
   @override
   Widget build(BuildContext context) {
+    // RoundCount = 5;
+    // if (widget.data != null) {
+    //   print(widget.data["currentRound"]);
+    // }
+    // return Container();
 
     return ListView.builder(
       // shrinkWrap: true,
-      itemCount: widget.msg.length,
+      itemCount: 1,
       physics: const BouncingScrollPhysics(),
-      // itemCount: 40,
       controller: _scrollController,
       itemBuilder: (context, index) {
-        return ChatControllerChild(msg: widget.msg[index]);
+        return ChatControllerChild(
+          msg: widget.msg[index],
+          data: widget.data,
+          // index: index,
+        );
         // return Text("HEllllo");
       },
     );

@@ -3,7 +3,8 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/ChatContr
 import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_controller.dart';
 
 class Channelchat extends StatelessWidget {
-  const Channelchat({super.key});
+  final data;
+  const Channelchat({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +86,7 @@ class Channelchat extends StatelessWidget {
       color: Colors.red[100],
       child: Column(
         children: [
-          Expanded(child: ChatControllerParent(msg: msg)),
+          Expanded(child: ChatControllerParent(msg: msg, data: data)),
           Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(

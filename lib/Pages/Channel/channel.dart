@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/channel_chat.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelFiles/FloatIcon/floaticon.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelFiles/channel_files.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelUsers/channel_users.dart';
 
 class Channel extends StatefulWidget {
-  const Channel({super.key});
+  final channel;
+  final String workspaceID;
+  const Channel({super.key, required this.channel, required this.workspaceID});
 
   @override
   State<Channel> createState() => _ChannelState();
@@ -13,8 +16,9 @@ class Channel extends StatefulWidget {
 
 class _ChannelState extends State<Channel> {
   int selectedPage = 0;
-
   bool _isfloatVisible = false;
+  var ChannelData;
+  List msgs = [];
 
   final PageController _pageController = PageController(
     initialPage: 0,
@@ -23,14 +27,15 @@ class _ChannelState extends State<Channel> {
 
   void handlePageSelection(int index) {
     setState(() {
-      // _selectedPage = index;
-      // setState(() {
-        _isfloatVisible = false;
+      _isfloatVisible = false;
       _pageController.animateToPage(index,
           duration: Durations.medium1, curve: Curves.easeIn);
       selectedPage = index;
-      // });
     });
+  }
+
+  void handlemsgList() {
+    // ChannelData?["Msg"].
   }
 
   void handleFloatButtonVisibility() {
@@ -39,11 +44,45 @@ class _ChannelState extends State<Channel> {
     });
   }
 
+  void handleChannelData() async {
+    await AuthServices()
+        .getChannel(widget.workspaceID, widget.channel["ID"])
+        .then((value) => {ChannelData = value});
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleChannelData();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  var datas = {
+    "Msg": {
+      "Round1": [
+        {
+          "Name": "Arul Rosario",
+          "msg": "Hello",
+          "sender": "me",
+          "date": "12/12/2021",
+        }
+      ]
+    }
+  };
+
   @override
   Widget build(BuildContext context) {
+    // print(ChannelData?["Msg"]["Round1"]);
+
     List<Widget> pages = [
       //Chat,
-      Channelchat(),
+      Channelchat(data: ChannelData?["Msg"] == null ? {} : ChannelData),
 
       //Files,
       ChannelFiles(),
@@ -56,31 +95,34 @@ class _ChannelState extends State<Channel> {
         appBar: AppBar(
           title: Text('Channel'),
         ),
-        floatingActionButton: selectedPage == 1? GestureDetector(
-          onTap: () => handleFloatButtonVisibility(),
-          child: AnimatedContainer(
-              duration: Durations.extralong1,
-              child: _isfloatVisible
-                  ? const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FloatIcon(
-                          icon: Icon(Icons.drive_folder_upload_outlined,
-                              color: Colors.white),
-                        ),
-                        SizedBox(height: 10),
-                        FloatIcon(icon: Icon(Icons.add, color: Colors.white)),
-                      ],
-                    )
-                  : GestureDetector(
-                      onTap: () => handleFloatButtonVisibility(),
-                      child: const FloatIcon(
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                      ))),
-        ): null,
+        floatingActionButton: selectedPage == 1
+            ? GestureDetector(
+                onTap: () => handleFloatButtonVisibility(),
+                child: AnimatedContainer(
+                    duration: Durations.extralong1,
+                    child: _isfloatVisible
+                        ? const Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              FloatIcon(
+                                icon: Icon(Icons.drive_folder_upload_outlined,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(height: 10),
+                              FloatIcon(
+                                  icon: Icon(Icons.add, color: Colors.white)),
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () => handleFloatButtonVisibility(),
+                            child: const FloatIcon(
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            ))),
+              )
+            : null,
         body: Column(
           children: [
             Row(
