@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:uuid/uuid.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -119,6 +120,162 @@ class AuthServices {
     }
   }
 
+  Future<String> createWorkspace(
+    String name,
+    String emailID,
+    String workspaceName,
+    int strict,
+    List roles,
+    String role,
+  ) async {
+    // Create UUID
+    String res = "Error";
+
+    const uuid = Uuid();
+    final id = uuid.v1();
+
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Workspace": FieldValue.arrayUnion([
+          {
+            "Name": workspaceName,
+            "Role": role,
+            "Workspace-ID": id,
+            "last-visited": true,
+          }
+        ]),
+      });
+
+      await FirebaseFirestore.instance.collection("Workspace").doc(id).set({
+        "All-Users": {
+          "Name": name,
+          "Email-ID": emailID,
+          "Data-Joined": Timestamp.now(),
+        },
+        "Admin": emailID,
+        "Roles": roles,
+        "Strict": strict,
+        "Channels": [],
+      });
+
+      res = "Success";
+    } catch (e) {
+      // print(e.toString());
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future createChannel(String workspaceID, String channelName,
+      String description, String name, String emailID) async {
+    String res = "Error";
+    try {
+      final id = const Uuid().v1();
+
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .collection(id)
+          .doc("Files")
+          .set({});
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .collection(id)
+          .doc("Messages")
+          .set({
+        "Msg": {
+          "Round1": [],
+          "roundCount": 0,
+          "currentRound": 1,
+        },
+      });
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .collection(id)
+          .doc("Users")
+          .update({
+        "Users": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Data-Joined": Timestamp.now(),
+          }
+        ])
+      });
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .update({
+        "Channels": FieldValue.arrayUnion([
+          {
+            "Name": channelName,
+            "ID": id,
+            "Description": description,
+          }
+        ]),
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  Future<String> addUsertoWorkspace(
+      String workSpaceID, String name, String emailID) async {
+    String res = "Error";
+
+    try {
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workSpaceID)
+          .update({
+        "All-Users": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Data-Joined": Timestamp.now(),
+          }
+        ])
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future<String> addUserToChannel(
+      String workspaceID, String channelID, String name, String emailID) async {
+    String res = "Error";
+
+    try {
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .collection(channelID)
+          .doc("Users")
+          .update({
+        "Users": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Data-Joined": Timestamp.now(),
+          }
+        ])
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
   Stream channelChat(String workspaceID, String channelID) {
     return FirebaseFirestore.instance
         .collection("Workspace")
@@ -200,9 +357,7 @@ class AuthServices {
               });
 
       res = "Success";
-      print("SENT!");
     } catch (e) {
-      print(e.toString());
       res = e.toString();
     }
 
@@ -245,7 +400,7 @@ class AuthServices {
     try {
       var user = FirebaseFirestore.instance
           .collection("Users")
-          .doc("itsarrowhere380@gmail.com")
+          .doc(_auth.currentUser!.email)
           .get();
       return user;
     } catch (e) {
@@ -253,16 +408,4 @@ class AuthServices {
     }
   }
 
-  Future getCurrentUser() async {
-    try {
-      var user = FirebaseFirestore.instance
-          .collection("Users")
-          .doc("5iAOiMSJWa7CZtXlkZ7y")
-          .get()
-          .asStream();
-      return user;
-    } catch (e) {
-      // print(e.toString());
-    }
-  }
 }

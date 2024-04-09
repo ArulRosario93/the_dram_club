@@ -64,7 +64,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      ChannelPage(list: curentWorkspace?['Channels'] ?? [], workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
+      ChannelPage(
+        userID: user?['Email-ID']?? "",
+          list: curentWorkspace?['Channels'] ?? [],
+          workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
 
       // 0, 1, 2
       const LeaveForm(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelChat/channel_chat.dart';
 import 'package:the_dram_club/Pages/Channel/ChannelFiles/FloatIcon/floaticon.dart';
@@ -122,7 +123,7 @@ class _ChannelState extends State<Channel> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Channel'),
+          title: Text(widget.channel["Name"] ?? 'Channel Name', style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 18),),
         ),
         floatingActionButton: selectedPage == 1
             ? GestureDetector(

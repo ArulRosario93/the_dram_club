@@ -29,7 +29,7 @@ class GetStarted extends StatelessWidget {
       children: [
         // Container(),
         Flexible(
-            flex: 4,
+            flex: 6,
             child: Container(
               alignment: Alignment.center,
               child: Lottie.asset("assets/Lottie/workingLottie.json",

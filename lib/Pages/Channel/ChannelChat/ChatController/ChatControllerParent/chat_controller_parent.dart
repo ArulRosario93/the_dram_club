@@ -20,7 +20,7 @@ class ChatControllerParent extends StatefulWidget {
 }
 
 class _ChatControllerParentState extends State<ChatControllerParent> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool loaded = false;
 
   void _scrollToBottom() {
@@ -38,7 +38,6 @@ class _ChatControllerParentState extends State<ChatControllerParent> {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: AuthServices().channelChat(widget.workspaceID, widget.channelID),
       builder: (context, snapshot) {
@@ -54,31 +53,18 @@ class _ChatControllerParentState extends State<ChatControllerParent> {
           // shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           controller: _scrollController,
+
           itemBuilder: (context, index) {
             return ChatControllerChild(
-              data: snapshot.data["Msg"]["Round${index+1}"],
+              data: widget.data["Msg"]["Round${index + 1}"],
               indexParent: index,
             );
           },
-          itemCount: snapshot.data["Msg"]["currentRound"],
+          itemCount: widget.data?["Msg"]?["currentRound"] == null
+              ? 0
+              : widget.data["Msg"]["currentRound"],
         );
       },
     );
-
-    // return ListView.builder(
-    //   // shrinkWrap: true,
-    //   physics: const BouncingScrollPhysics(),
-    //   controller: _scrollController,
-
-    //   itemBuilder: (context, index) {
-    //     return ChatControllerChild(
-    //       data: widget.data["Msg"]["Round${index + 1}"],
-    //       indexParent: index,
-    //     );
-    //   },
-    //   itemCount: widget.data?["Msg"]?["currentRound"] == null
-    //       ? 0
-    //       : widget.data["Msg"]["currentRound"],
-    // );
   }
 }
