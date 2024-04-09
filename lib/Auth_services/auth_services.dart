@@ -122,8 +122,7 @@ class AuthServices {
   Future<String> signInWithEmailAndPassword(
       String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
       // User user = result.user!;
       return "SUCCESS";
     } catch (e) {
@@ -131,12 +130,52 @@ class AuthServices {
     }
   }
 
+  Future<String> sendMsgChannel(String workspaceID, String channelID,
+      String msg, String emailiD, String name, String currentRound) async {
+    String res = "Error";
+    try {
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .collection(channelID)
+          .doc("Messages")
+          .set({
+        "Msg": {
+          currentRound: FieldValue.arrayUnion([
+            {
+              "Name": name,
+              "msg": msg,
+              "Email-ID": emailiD,
+              "Profile-Pic": "",
+              "Timestamp": DateTime.now().toString(),
+            }
+          ])
+        }, 
+        "currentRound": FieldValue.increment(1)
+      }, SetOptions(merge: true));
+      res = "Success";
+    } catch (e) {
+      // print(e.toString());
+      res = e.toString();
+    }
+
+    return res;
+  }
+
   Future getWorkspace(String ID) async {
-    return await FirebaseFirestore.instance.collection("Workspace").doc(ID).get();
+    return await FirebaseFirestore.instance
+        .collection("Workspace")
+        .doc(ID)
+        .get();
   }
 
   Future getChannel(String workspaceID, String channelID) async {
-    return await FirebaseFirestore.instance.collection("Workspace").doc("Something").collection("12345678").doc("Messages").get();
+    return await FirebaseFirestore.instance
+        .collection("Workspace")
+        .doc("Something")
+        .collection("12345678")
+        .doc("Messages")
+        .get();
   }
 
   Future resetPassword(String email) async {

@@ -4,89 +4,19 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_cont
 
 class Channelchat extends StatelessWidget {
   final data;
-  const Channelchat({super.key, required this.data});
+  final Function(String round) handleRound;
+  final Function(String msg) handleMsg;
+  const Channelchat({super.key, required this.data, required this.handleRound, required this.handleMsg});
 
   @override
   Widget build(BuildContext context) {
-    List msg = [
-      [
-        {'msg': 'Hello', 'sender': 'me', 'date': '12/12/2021', 'time': '12:00'},
-        {'msg': 'Hi', 'sender': 'other', 'date': '12/12/2021', 'time': '12:01'},
-        {
-          'msg': 'How are you?',
-          'sender': 'me',
-          'date': '12/12/2021',
-          'time': '12:02'
-        },
-        {
-          'msg': 'I am fine',
-          'sender': 'other',
-          'date': '12/12/2021',
-          'time': '12:03'
-        },
-        {
-          "msg": "How are you?",
-          "sender": "me",
-          'date': '12/12/2021',
-          'time': '12:04'
-        },
-        {
-          "msg": "I am fine",
-          "sender": "other",
-          'date': '13/12/2021',
-          'time': '12:05'
-        },
-        {
-          "msg": "I am fine",
-          "sender": "other",
-          'date': '13/12/2021',
-          'time': '12:05'
-        }
-      ],
-      [
-        {
-          "msg": "How are you?",
-          "sender": "me",
-          'date': '13/12/2021',
-          'time': '12:04'
-        },
-        {
-          "msg": "I am fine",
-          "sender": "other",
-          'date': '13/12/2021',
-          'time': '12:05'
-        },
-        {"msg": "Hello", "sender": "me", 'date': '12/12/2021', 'time': '12:06'},
-        {"msg": "Hi", "sender": "other", 'date': '12/12/2021', 'time': '12:07'},
-        {
-          "msg": "How are you?",
-          "sender": "me",
-          'date': '14/12/2021',
-          'time': '12:04'
-        },
-        {
-          "msg": "I am fine",
-          "sender": "other",
-          'date': '14/12/2021',
-          'time': '12:05'
-        },
-        {
-          "msg": "I am fine",
-          "sender": "other",
-          'date': '14/12/2021',
-          'time': '12:05'
-        },
-        {"msg": "Hello", "sender": "me", 'date': '14/12/2021', 'time': '12:06'},
-        {"msg": "Hi", "sender": "other", 'date': '15/12/2021', 'time': '12:07'},
-        {"msg": "Hi", "sender": "other", 'date': '15/12/2021', 'time': '12:07'}
-      ]
-    ];
+    final TextEditingController msgController = TextEditingController();
 
     return Container(
       color: Colors.red[100],
       child: Column(
         children: [
-          Expanded(child: ChatControllerParent(msg: msg, data: data)),
+          Expanded(child: ChatControllerParent(data: data, handleRound: handleRound)),
           Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -95,16 +25,19 @@ class Channelchat extends StatelessWidget {
               margin: const EdgeInsets.only(left: 5, right: 5, bottom: 8),
               child: TextFormField(
                 maxLines: 7,
+                controller: msgController,
                 minLines: 1,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Type a message',
-                  prefixIcon: Icon(Icons.attach_file_sharp),
-                  suffixIcon: Icon(Icons.send_rounded),
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
+                  prefixIcon: const Icon(Icons.attach_file_sharp),
+                  suffixIcon: GestureDetector(
+                      onTap: handleMsg(msgController.text),
+                      child: const Icon(Icons.send_rounded)),
+                  contentPadding: const EdgeInsets.all(15),
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                   ),
                 ),

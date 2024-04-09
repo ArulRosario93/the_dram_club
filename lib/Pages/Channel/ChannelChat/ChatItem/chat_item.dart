@@ -55,16 +55,19 @@ class ChatItem extends StatelessWidget {
                 //       fontSize: 22,
                 //       fontWeight: FontWeight.w600),
                 // ),
-                content: const UserProfile(casualook: false,),
+                content: const UserProfile(
+                  casualook: false,
+                ),
               ));
     }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment:
-          sender == "me" ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: sender == "itsarrowhere380@gmail.com"
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
       children: [
-        sender == "me"
+        sender == "itsarrowhere380@gmail.com"
             ? const SizedBox()
             : Padding(
                 padding: const EdgeInsets.only(top: 20, left: 5),
@@ -80,12 +83,12 @@ class ChatItem extends StatelessWidget {
                 ),
               ),
         Column(
-          crossAxisAlignment: sender == "me"
+          crossAxisAlignment: sender == "itsarrowhere380@gmail.com"
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
             // !samedate? ChatDate(date: date): const SizedBox(),
-            sender != "me"
+            sender != "itsarrowhere380@gmail.com"
                 ? Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: GestureDetector(
@@ -110,13 +113,17 @@ class ChatItem extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: sender == "me" ? Colors.white : Colors.blue,
+                color: sender == "itsarrowhere380@gmail.com"
+                    ? Colors.white
+                    : Colors.blue,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
                 msg,
                 style: GoogleFonts.montserrat(
-                    color: sender == "me" ? Colors.black : Colors.white,
+                    color: sender == "itsarrowhere380@gmail.com"
+                        ? Colors.black
+                        : Colors.white,
                     fontSize: 12),
               ),
             ),

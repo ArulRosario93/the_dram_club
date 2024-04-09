@@ -19,6 +19,7 @@ class _ChannelState extends State<Channel> {
   bool _isfloatVisible = false;
   var ChannelData;
   List msgs = [];
+  late String currentRound;
 
   final PageController _pageController = PageController(
     initialPage: 0,
@@ -32,6 +33,28 @@ class _ChannelState extends State<Channel> {
           duration: Durations.medium1, curve: Curves.easeIn);
       selectedPage = index;
     });
+  }
+
+  void handleCurrentRound(String round) {
+    setState(() {
+      currentRound = round;
+    });
+  }
+
+  void handlemsgSend(
+    String msg,
+  ) async {
+    String res = await AuthServices().sendMsgChannel(
+      widget.workspaceID,
+      widget.channel["ID"],
+      msg,
+      "itsarrowhere380@gmail.com",
+      "Arul Rosario",
+      currentRound,
+    );
+    if (res != "Success") {
+      const SnackBar(content: Text("Failed to send message"));
+    }
   }
 
   void handlemsgList() {
@@ -82,7 +105,11 @@ class _ChannelState extends State<Channel> {
 
     List<Widget> pages = [
       //Chat,
-      Channelchat(data: ChannelData?["Msg"] == null ? {} : ChannelData),
+      Channelchat(
+        handleRound: handleCurrentRound,
+          handleMsg: handlemsgSend,
+          data:
+              ChannelData?["Msg"]?["currentRound"] == null ? {} : ChannelData),
 
       //Files,
       ChannelFiles(),
