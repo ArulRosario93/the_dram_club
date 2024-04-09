@@ -119,6 +119,15 @@ class AuthServices {
     }
   }
 
+  Stream channelChat(String workspaceID, String channelID) {
+    return FirebaseFirestore.instance
+        .collection("Workspace")
+        .doc(workspaceID)
+        .collection(channelID)
+        .doc("Messages")
+        .snapshots();
+  }
+
   Future<String> signInWithEmailAndPassword(
       String email, String password) async {
     try {
@@ -131,7 +140,7 @@ class AuthServices {
   }
 
   Future<String> sendMsgChannel(String workspaceID, String channelID,
-      String msg, String emailiD, String name, String currentRound) async {
+      String msg, String emailiD, String name) async {
     String res = "Error";
     try {
       await FirebaseFirestore.instance
@@ -139,23 +148,61 @@ class AuthServices {
           .doc(workspaceID)
           .collection(channelID)
           .doc("Messages")
-          .set({
-        "Msg": {
-          currentRound: FieldValue.arrayUnion([
-            {
-              "Name": name,
-              "msg": msg,
-              "Email-ID": emailiD,
-              "Profile-Pic": "",
-              "Timestamp": DateTime.now().toString(),
-            }
-          ])
-        }, 
-        "currentRound": FieldValue.increment(1)
-      }, SetOptions(merge: true));
+          .get()
+          .then((value) async => {
+                if (value.data()!["Msg"]["roundCount"] > 200)
+                  {
+                    await FirebaseFirestore.instance
+                        .collection("Workspace")
+                        .doc(workspaceID)
+                        .collection(channelID)
+                        .doc("Messages")
+                        .set({
+                      "Msg": {
+                        "Round${value.data()!["currentRound"] + 1}":
+                            FieldValue.arrayUnion([
+                          {
+                            "Name": name,
+                            "msg": msg,
+                            "Email-ID": emailiD,
+                            "Profile-Pic": "",
+                            "Timestamp": DateTime.now().toString(),
+                          }
+                        ]),
+                        "roundCount": FieldValue.increment(1),
+                        "currentRound": FieldValue.increment(1)
+                      },
+                    }, SetOptions(merge: true))
+                  }
+                else
+                  {
+                    await FirebaseFirestore.instance
+                        .collection("Workspace")
+                        .doc(workspaceID)
+                        .collection(channelID)
+                        .doc("Messages")
+                        .set({
+                      "Msg": {
+                        "Round${value.data()!["Msg"]["currentRound"]}":
+                            FieldValue.arrayUnion([
+                          {
+                            "Name": name,
+                            "msg": msg,
+                            "Email-ID": emailiD,
+                            "Profile-Pic": "",
+                            "Timestamp": Timestamp.now(),
+                          }
+                        ]),
+                        "roundCount": FieldValue.increment(1)
+                      },
+                    }, SetOptions(merge: true))
+                  }
+              });
+
       res = "Success";
+      print("SENT!");
     } catch (e) {
-      // print(e.toString());
+      print(e.toString());
       res = e.toString();
     }
 

@@ -63,7 +63,7 @@ class ChatControllerChild extends StatelessWidget {
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
             children: [
-              samedate ? ChatDate(date: timeStamp) : const SizedBox(),
+              !samedate ? ChatDate(date: timeStamp) : const SizedBox(),
               ChatItem(
                   sameUser: sameUser,
                   msg: data[index]["msg"],

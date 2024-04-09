@@ -111,7 +111,7 @@ class ChatItem extends StatelessWidget {
                 left: 5,
                 top: !sameTime ? 3 : 0,
               ),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: sender == "itsarrowhere380@gmail.com"
                     ? Colors.white
