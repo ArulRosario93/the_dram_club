@@ -3,11 +3,11 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/ChatContr
 // import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatController/chat_controller.dart';
 
 class Channelchat extends StatefulWidget {
-  final data;
   final Function(String msg) handleMsg;
   final String workspaceID;
   final String channelID;
-  const Channelchat({super.key, required this.data, required this.workspaceID, required this.channelID, required this.handleMsg});
+  final String userEmailID;
+  const Channelchat({super.key, required this.workspaceID, required this.channelID, required this.handleMsg, required this.userEmailID});
 
   @override
   State<Channelchat> createState() => _ChannelchatState();
@@ -29,7 +29,7 @@ class _ChannelchatState extends State<Channelchat> {
         children: [
           Expanded(
               child: ChatControllerParent(
-            data: widget.data,
+            userEmailID: widget.userEmailID,
             workspaceID: widget.workspaceID,
             channelID: widget.channelID,
           )),

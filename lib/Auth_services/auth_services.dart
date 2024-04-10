@@ -210,6 +210,21 @@ class AuthServices {
         },
       });
 
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection(channelID)
+          .doc("Users")
+          .set({
+        "Users": [
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Data-Joined": Timestamp.now(),
+          },
+        ]
+      });
+
       await FirebaseFirestore.instance.collection("Workspace").doc(id).set({
         "All-Users": {
           "Name": name,
@@ -229,33 +244,6 @@ class AuthServices {
         ],
         "Requests": [],
         "Responses": []
-      });
-
-      await FirebaseFirestore.instance
-          .collection("Workspace")
-          .doc(id)
-          .collection("Files")
-          .doc("Files")
-          .set({
-        "Files": [],
-      });
-      await FirebaseFirestore.instance
-          .collection("Workspace")
-          .doc(id)
-          .collection("Messages")
-          .doc("Msg")
-          .set({
-        "Round1": [],
-        "roundCount": 0,
-        "currentRound": 1,
-      });
-      await FirebaseFirestore.instance
-          .collection("Workspace")
-          .doc(id)
-          .collection("Files")
-          .doc("Users")
-          .set({
-        "Users": [],
       });
 
       res = "Success";
@@ -325,23 +313,124 @@ class AuthServices {
     return res;
   }
 
-  Future<String> addUsertoWorkspace(
-      String workSpaceID, String name, String emailID) async {
+  Future<String> requestUsertoJoinWorkspace(
+    String workSpaceID,
+    String name,
+    String emailID,
+    String workspaceName,
+    String workspaceDescription,
+  ) async {
     String res = "Error";
 
     try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Requests": FieldValue.arrayUnion([
+          {
+            "Name": workspaceName,
+            "ID": workSpaceID,
+            "Description": workspaceDescription,
+            "Data-Joined": Timestamp.now(),
+            "Note": "You've been invited to join this workspace",
+          }
+        ])
+      });
+
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future acceptRequestToJoinWorkspace(
+    String workspaceID,
+    String emailID,
+    String name,
+    String workspaceName,
+    String workspaceDescription,
+  ) async {
+    String res = "Error";
+
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Workspace": FieldValue.arrayUnion([
+          {
+            "Name": workspaceName,
+            "Description": workspaceDescription,
+            "ID": workspaceID,
+            "lastVisited": false,
+          }
+        ])
+      });
+
       await FirebaseFirestore.instance
           .collection("Workspace")
-          .doc(workSpaceID)
+          .doc(workspaceID)
           .update({
         "All-Users": FieldValue.arrayUnion([
           {
-            "Name": name,
             "Email-ID": emailID,
+            "Name": name,
             "Data-Joined": Timestamp.now(),
           }
         ])
       });
+
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Requests": FieldValue.arrayRemove([
+          {
+            "Name": workspaceID,
+          }
+        ])
+      });
+
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Notification": FieldValue.arrayUnion([
+          {
+            "Note": "You've accepted to join $workspaceName workspace",
+            "Time": Timestamp.now(),
+            "Type": "Joined-Workspace",
+          }
+        ])
+      });
+
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future<String> rejectRequestToJoinWorkspace(
+    String workspaceID,
+    String emailID,
+    String name,
+    String workspaceName,
+    String workspaceDescription,
+  ) async {
+    String res = "Error";
+
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Requests": FieldValue.arrayRemove([
+          {
+            "Name": workspaceID,
+          }
+        ])
+      });
+
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Notification": FieldValue.arrayUnion([
+          {
+            "Note": "You've rejected to join $workspaceName workspace",
+            "Time": Timestamp.now(),
+            "Type": "Rejected-Workspace",
+          }
+        ])
+      });
+
       res = "Success";
     } catch (e) {
       res = e.toString();
@@ -408,7 +497,7 @@ class AuthServices {
     return res;
   }
 
-  Stream channelChat(String workspaceID, String channelID) {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> channelChat(String workspaceID, String channelID) {
     return FirebaseFirestore.instance
         .collection("Workspace")
         .doc(workspaceID)
@@ -506,8 +595,8 @@ class AuthServices {
   Future getChannel(String workspaceID, String channelID) async {
     return await FirebaseFirestore.instance
         .collection("Workspace")
-        .doc("Something")
-        .collection("12345678")
+        .doc(workspaceID)
+        .collection(channelID)
         .doc("Messages")
         .get();
   }

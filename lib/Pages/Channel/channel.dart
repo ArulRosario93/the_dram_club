@@ -11,7 +11,12 @@ class Channel extends StatefulWidget {
   final String userName;
   final String userEmailID;
   final String workspaceID;
-  const Channel({super.key, required this.channel, required this.workspaceID, required this.userName, required this.userEmailID});
+  const Channel(
+      {super.key,
+      required this.channel,
+      required this.workspaceID,
+      required this.userName,
+      required this.userEmailID});
 
   @override
   State<Channel> createState() => _ChannelState();
@@ -20,7 +25,7 @@ class Channel extends StatefulWidget {
 class _ChannelState extends State<Channel> {
   int selectedPage = 0;
   bool _isfloatVisible = false;
-  var ChannelData;
+  // var ChannelData;
   List msgs = [];
   int currentRound = 0;
 
@@ -33,7 +38,7 @@ class _ChannelState extends State<Channel> {
     setState(() {
       _isfloatVisible = false;
       _pageController.animateToPage(index,
-          duration: Durations.medium1, curve: Curves.easeIn);
+          duration: Duration.zero, curve: Curves.easeIn);
       selectedPage = index;
     });
   }
@@ -47,12 +52,10 @@ class _ChannelState extends State<Channel> {
   void handlemsgSend(
     String msg,
   ) async {
-    // print(currentRound);
-    // print(msg);
     String res = await AuthServices().sendMsgChannel(
       widget.workspaceID,
       widget.channel["ID"],
-      msg,
+      msg.trim(),
       widget.userEmailID,
       widget.userName,
     );
@@ -71,17 +74,17 @@ class _ChannelState extends State<Channel> {
     });
   }
 
-  void handleChannelData() async {
-    await AuthServices()
-        .getChannel(widget.workspaceID, widget.channel["ID"])
-        .then((value) => {ChannelData = value});
-    setState(() {});
-  }
+  // void handleChannelData() async {
+  //   await AuthServices()
+  //       .getChannel(widget.workspaceID, widget.channel["ID"])
+  //       .then((value) => {ChannelData = value});
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
     super.initState();
-    handleChannelData();
+    // handleChannelData();
   }
 
   @override
@@ -92,16 +95,14 @@ class _ChannelState extends State<Channel> {
 
   @override
   Widget build(BuildContext context) {
-    // print(ChannelData?["Msg"]["Round1"]);
-
     List<Widget> pages = [
       //Chat,
       Channelchat(
-          handleMsg: handlemsgSend,
-          workspaceID: widget.workspaceID,
-          channelID: widget.channel["ID"],
-          data:
-              ChannelData?["Msg"]?["currentRound"] == null ? {} : ChannelData),
+        handleMsg: handlemsgSend,
+        userEmailID: widget.userEmailID,
+        workspaceID: widget.workspaceID,
+        channelID: widget.channel["ID"],
+      ),
 
       //Files,
       ChannelFiles(),
@@ -112,7 +113,11 @@ class _ChannelState extends State<Channel> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.channel["Name"] ?? 'Channel Name', style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 18),),
+          title: Text(
+            widget.channel["Name"] ?? 'Channel Name',
+            style: GoogleFonts.montserrat(
+                fontWeight: FontWeight.w600, fontSize: 18),
+          ),
         ),
         floatingActionButton: selectedPage == 1
             ? GestureDetector(

@@ -5,11 +5,13 @@ import 'package:the_dram_club/Pages/Channel/ChannelChat/ChatItem/chat_item.dart'
 
 class ChatControllerChild extends StatelessWidget {
   final int indexParent;
+  final String userEmailID;
   final data;
   const ChatControllerChild({
     super.key,
     required this.data,
     required this.indexParent,
+    required this.userEmailID,
   });
 
   @override
@@ -59,7 +61,7 @@ class ChatControllerChild extends StatelessWidget {
 
           return Column(
             crossAxisAlignment:
-                data[index]["Email-ID"] == "itsarrowhere380@gmail.com"
+                data[index]["Email-ID"] == userEmailID
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
             children: [
@@ -69,6 +71,7 @@ class ChatControllerChild extends StatelessWidget {
                   msg: data[index]["msg"],
                   samedate: samedate,
                   sameTime: sameTime,
+                  userEmailID: userEmailID,
                   sender: data[index]["Email-ID"],
                   time: timeStamp.toDate().toString().substring(11, 16),
                   date: timeStamp.toDate().toString().substring(0, 10))

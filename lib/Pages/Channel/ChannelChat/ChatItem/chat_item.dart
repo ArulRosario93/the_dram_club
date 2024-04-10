@@ -10,6 +10,7 @@ class ChatItem extends StatelessWidget {
   final String sender;
   final String date;
   final String time;
+  final String userEmailID;
   const ChatItem(
       {super.key,
       required this.sameUser,
@@ -18,7 +19,8 @@ class ChatItem extends StatelessWidget {
       required this.samedate,
       required this.msg,
       required this.sender,
-      required this.time});
+      required this.time,
+      required this.userEmailID});
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +65,11 @@ class ChatItem extends StatelessWidget {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: sender == "itsarrowhere380@gmail.com"
+      mainAxisAlignment: sender == userEmailID
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
       children: [
-        sender == "itsarrowhere380@gmail.com"
+        sender == userEmailID
             ? const SizedBox()
             : Padding(
                 padding: const EdgeInsets.only(top: 20, left: 5),
@@ -83,12 +85,12 @@ class ChatItem extends StatelessWidget {
                 ),
               ),
         Column(
-          crossAxisAlignment: sender == "itsarrowhere380@gmail.com"
+          crossAxisAlignment: sender == userEmailID
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
             // !samedate? ChatDate(date: date): const SizedBox(),
-            sender != "itsarrowhere380@gmail.com"
+            sender != userEmailID
                 ? Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: GestureDetector(
@@ -113,7 +115,7 @@ class ChatItem extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: sender == "itsarrowhere380@gmail.com"
+                color: sender == userEmailID
                     ? Colors.white
                     : Colors.blue,
                 borderRadius: BorderRadius.circular(30),
@@ -121,7 +123,7 @@ class ChatItem extends StatelessWidget {
               child: Text(
                 msg,
                 style: GoogleFonts.montserrat(
-                    color: sender == "itsarrowhere380@gmail.com"
+                    color: sender == userEmailID
                         ? Colors.black
                         : Colors.white,
                     fontSize: 12),
