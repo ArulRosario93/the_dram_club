@@ -56,11 +56,9 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
 
   void handleSubmit() async {
     // Create Workspace
-    // print(orgName.text);
-    // print(strict);
-    // print(roles);
-    String res = await AuthServices().createWorkspace(
-        widget.userName, widget.emailID, orgName.text, strict, roles, "Admin", orgDes.text);
+
+    String res = await AuthServices().createWorkspace(widget.userName,
+        widget.emailID, orgName.text, strict, roles, "Admin", orgDes.text);
 
     if (res == "Success") {
       goHomePage();

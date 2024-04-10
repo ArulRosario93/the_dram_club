@@ -52,10 +52,12 @@ class ChannelPage extends StatelessWidget {
               title: list[i]["Name"],
               workspaceID: workspaceID,
               subtitle: list[i]["Description"],
+              userName: userName,
+              userEmailID: userID,
               list: list[i]),
         const SizedBox(height: 10),
         GestureDetector(
-          onTap: list.isNotEmpty ? handleCreateChannel : handleCreateWorkspace,
+          onTap: workspaceID.isNotEmpty ? handleCreateChannel : handleCreateWorkspace,
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -65,7 +67,7 @@ class ChannelPage extends StatelessWidget {
             margin: const EdgeInsets.only(left: 20, right: 20),
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             child: Text(
-              list.isNotEmpty
+              workspaceID.isNotEmpty
                   ? "Create Channel"
                   : "Create your first Workspace",
               style: GoogleFonts.montserrat(),

@@ -143,35 +143,71 @@ class AuthServices {
             "Role": role,
             "Description": description,
             "ID": id,
-            "last-visited": true,
+            "lastVisited": true,
           }
         ]),
       });
 
-      // assigning last visited false to all other workspaces
+      // assigning last visited false to all other workspaces of the user
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(emailID)
           .get()
           .then((value) async {
         List workspaces = value.data()!["Workspace"];
-        for (var i = 0; i < workspaces.length; i++) {
-          if (workspaces[i]["Workspace-ID"] != id) {
+        for (var i in workspaces) {
+          if (i["ID"] != id) {
             await FirebaseFirestore.instance
                 .collection("Users")
                 .doc(emailID)
                 .update({
               "Workspace": FieldValue.arrayRemove([
                 {
-                  "Name": workspaces[i]["Name"],
-                  "Role": workspaces[i]["Role"],
-                  "Workspace-ID": workspaces[i]["Workspace-ID"],
-                  "last-visited": false,
+                  "Name": i["Name"],
+                  "Role": i["Role"],
+                  "Description": i["Description"],
+                  "ID": i["ID"],
+                  "lastVisited": true,
+                }
+              ]),
+            });
+            await FirebaseFirestore.instance
+                .collection("Users")
+                .doc(emailID)
+                .update({
+              "Workspace": FieldValue.arrayUnion([
+                {
+                  "Name": i["Name"],
+                  "Role": i["Role"],
+                  "Description": i["Description"],
+                  "ID": i["ID"],
+                  "lastVisited": false,
                 }
               ]),
             });
           }
         }
+      });
+
+      final channelID = const Uuid().v1();
+
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection(channelID)
+          .doc("Files")
+          .set({});
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection(channelID)
+          .doc("Messages")
+          .set({
+        "Msg": {
+          "Round1": [],
+          "roundCount": 0,
+          "currentRound": 1,
+        },
       });
 
       await FirebaseFirestore.instance.collection("Workspace").doc(id).set({
@@ -180,23 +216,45 @@ class AuthServices {
           "Email-ID": emailID,
           "Data-Joined": Timestamp.now(),
         },
+        "Name": workspaceName,
         "Admin": emailID,
         "Roles": roles,
         "Strict": strict,
-        "Channels": [],
+        "Channels": [
+          {
+            "Name": "General",
+            "ID": channelID,
+            "Description": "General Channel",
+          }
+        ],
         "Requests": [],
         "Responses": []
       });
 
-      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Files").doc("Files").set({
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection("Files")
+          .doc("Files")
+          .set({
         "Files": [],
       });
-      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Messages").doc("Msg").set({
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection("Messages")
+          .doc("Msg")
+          .set({
         "Round1": [],
         "roundCount": 0,
         "currentRound": 1,
       });
-      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Files").doc("Users").set({
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(id)
+          .collection("Files")
+          .doc("Users")
+          .set({
         "Users": [],
       });
 
@@ -281,6 +339,37 @@ class AuthServices {
             "Name": name,
             "Email-ID": emailID,
             "Data-Joined": Timestamp.now(),
+          }
+        ])
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future<String> exitUserFromWorkspace(
+      String workspaceID, String emailID) async {
+    String res = "Error";
+
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Workspace": FieldValue.arrayRemove([
+          {
+            "Name": workspaceID,
+          }
+        ])
+      });
+
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .update({
+        "All-Users": FieldValue.arrayRemove([
+          {
+            "Email-ID": emailID,
           }
         ])
       });

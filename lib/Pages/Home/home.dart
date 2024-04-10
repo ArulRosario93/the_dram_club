@@ -5,7 +5,6 @@ import 'package:the_dram_club/Pages/Home/ChannelPage/channel_page.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
 import 'package:the_dram_club/Pages/Notifications/notification.dart';
-import 'package:the_dram_club/Utils/hovering_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,19 +24,19 @@ class _HomePageState extends State<HomePage> {
   var curentWorkspace;
 
   void handleFirstIntialData(val) {
-    user = val;
-    print(val['Workspace']);
-    workspace = val['Workspace'];
-    if (workspace.isNotEmpty) {
-      curentWorkspaceShortBrief = val['Workspace'].firstWhere(
-        (element) => element['lastVisited'] == true,
-      );
-    }
-    loading = false;
-    setState(() {});
+    setState(() {
+      user = val;
+      workspace = val['Workspace'];
+      if (workspace.isNotEmpty) {
+        curentWorkspaceShortBrief = val['Workspace'].firstWhere(
+          (element) => element['lastVisited'] == true,
+        );
+      }
+      loading = false;
+    });
   }
 
-  void handleSecondIntialData() async {
+  void handleSecondIntialData(val) async {
     if (workspace.isNotEmpty) {
       await AuthServices()
           .getWorkspace(curentWorkspaceShortBrief["ID"])
@@ -52,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     await AuthServices()
         .getUser()
         .then(handleFirstIntialData)
-        .then((val) => handleSecondIntialData);
+        .then(handleSecondIntialData);
   }
 
   void handlePage(int val) {
@@ -100,7 +99,11 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        drawer: DrawerMain(list: workspace, userName: user?['Name'] ?? "", emailID: user?['Email-ID'] ?? "",),
+        drawer: DrawerMain(
+          list: workspace,
+          userName: user?['Name'] ?? "",
+          emailID: user?['Email-ID'] ?? "",
+        ),
         appBar: AppBar(
           title: Text(
             curentWorkspaceShortBrief?['Name'] ?? "The Dram Club",

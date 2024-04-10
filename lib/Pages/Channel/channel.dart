@@ -8,8 +8,10 @@ import 'package:the_dram_club/Pages/Channel/ChannelUsers/channel_users.dart';
 
 class Channel extends StatefulWidget {
   final channel;
+  final String userName;
+  final String userEmailID;
   final String workspaceID;
-  const Channel({super.key, required this.channel, required this.workspaceID});
+  const Channel({super.key, required this.channel, required this.workspaceID, required this.userName, required this.userEmailID});
 
   @override
   State<Channel> createState() => _ChannelState();
@@ -51,8 +53,8 @@ class _ChannelState extends State<Channel> {
       widget.workspaceID,
       widget.channel["ID"],
       msg,
-      "itsarrowhere380@gmail.com",
-      "Arul Rosario",
+      widget.userEmailID,
+      widget.userName,
     );
     if (res != "Success") {
       const SnackBar(content: Text("Failed to send message"));
@@ -87,19 +89,6 @@ class _ChannelState extends State<Channel> {
     _pageController.dispose();
     super.dispose();
   }
-
-  var datas = {
-    "Msg": {
-      "Round1": [
-        {
-          "Name": "Arul Rosario",
-          "msg": "Hello",
-          "sender": "me",
-          "date": "12/12/2021",
-        }
-      ]
-    }
-  };
 
   @override
   Widget build(BuildContext context) {
