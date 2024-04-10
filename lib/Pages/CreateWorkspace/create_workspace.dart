@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/CreateWorkspace/form.dart';
 import 'package:the_dram_club/Pages/CreateWorkspace/workspace_detail.dart';
+import 'package:the_dram_club/Pages/Home/home.dart';
 
 class CreateWorkSpace extends StatefulWidget {
-  const CreateWorkSpace({super.key});
+  final String emailID;
+  final String userName;
+  const CreateWorkSpace(
+      {super.key, required this.emailID, required this.userName});
 
   @override
   State<CreateWorkSpace> createState() => _CreateWorkSpaceState();
@@ -15,11 +20,54 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
   TextEditingController orgDes = TextEditingController();
 
   int selectedIndex = 0;
+  int strict = 0;
+  List roles = [];
 
   void gotonextPage() {
     setState(() {
       selectedIndex = 1;
     });
+  }
+
+  void handleStrict(int val) {
+    setState(() {
+      strict = val;
+    });
+  }
+
+  void goHomePage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+  }
+
+  void handleShowErr(String res) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Sign in failed: $res",
+          style: GoogleFonts.montserrat(),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void handleSubmit() async {
+    // Create Workspace
+    // print(orgName.text);
+    // print(strict);
+    // print(roles);
+    String res = await AuthServices().createWorkspace(
+        widget.userName, widget.emailID, orgName.text, strict, roles, "Admin", orgDes.text);
+
+    if (res == "Success") {
+      goHomePage();
+    } else {
+      // Error
+      handleShowErr(res);
+    }
   }
 
   @override
@@ -29,7 +77,7 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
         orgName: orgName,
         orgDes: orgDes,
       ),
-      const WorkspaceDetails(),
+      WorkspaceDetails(strict: handleStrict),
     ];
 
     return Scaffold(
@@ -45,7 +93,7 @@ class _CreateWorkSpaceState extends State<CreateWorkSpace> {
               //Submit is below
               Expanded(child: Container()),
               GestureDetector(
-                onTap: gotonextPage,
+                onTap: selectedIndex == 0 ? gotonextPage : handleSubmit,
                 child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.only(top: 20, bottom: 20),

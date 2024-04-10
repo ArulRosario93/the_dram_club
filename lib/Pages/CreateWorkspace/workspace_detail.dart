@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WorkspaceDetails extends StatefulWidget {
-  // int radioValue;
+  final Function(int val) strict;
   // Function(int val) radioChange;
-  const WorkspaceDetails({super.key});
+  const WorkspaceDetails({super.key, required this.strict});
 
   @override
   State<WorkspaceDetails> createState() => _WorkspaceDetailsState();
 }
 
 class _WorkspaceDetailsState extends State<WorkspaceDetails> {
-  int radioValue = 0;
+  int strict = 0;
+  void radioChange(int value) {
+    setState(() {
+      widget.strict(value);
+      strict = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    void radioChange(int value) {
-      setState(() {
-        radioValue = value;
-      });
-    }
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -68,7 +69,7 @@ class _WorkspaceDetailsState extends State<WorkspaceDetails> {
                   color: Colors.red, fontWeight: FontWeight.bold),
             ),
             trailing: Icon(
-              radioValue == 1
+              strict == 1
                   ? Icons.radio_button_checked_sharp
                   : Icons.radio_button_unchecked_sharp,
               color: Colors.deepPurple,
@@ -95,7 +96,7 @@ class _WorkspaceDetailsState extends State<WorkspaceDetails> {
                   color: Colors.orange, fontWeight: FontWeight.bold),
             ),
             trailing: Icon(
-              radioValue == 2
+              strict == 2
                   ? Icons.radio_button_checked_sharp
                   : Icons.radio_button_unchecked_sharp,
               color: Colors.deepPurple,
@@ -122,7 +123,7 @@ class _WorkspaceDetailsState extends State<WorkspaceDetails> {
                   color: Colors.green, fontWeight: FontWeight.bold),
             ),
             trailing: Icon(
-              radioValue == 3
+              strict == 3
                   ? Icons.radio_button_checked_sharp
                   : Icons.radio_button_unchecked_sharp,
               color: Colors.deepPurple,

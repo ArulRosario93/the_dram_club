@@ -1,23 +1,38 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:the_dram_club/Pages/CreateChannel/create_channel.dart";
+import "package:the_dram_club/Pages/CreateWorkspace/create_workspace.dart";
 import "package:the_dram_club/Utils/hovering_widget.dart";
 
 class ChannelPage extends StatelessWidget {
   final List list;
+  final String userName;
   final String userID;
   final String workspaceID;
   const ChannelPage(
       {super.key,
       required this.list,
       required this.workspaceID,
-      required this.userID});
+      required this.userID,
+      required this.userName});
 
   @override
   Widget build(BuildContext context) {
     void handleCreateChannel() {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const CreateChannel()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => CreateChannel(
+                    workspaceID: workspaceID,
+                    userEmailID: userID,
+                    userName: userName,
+                  )));
+    }
+
+    void handleCreateWorkspace() {
+      // Create Workspace
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CreateWorkSpace(emailID: userID, userName: userName)));
     }
 
     return Column(
@@ -26,7 +41,7 @@ class ChannelPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10),
           child: Text(
-            "Channels",
+            list.isNotEmpty ? "Channels" : "",
             textAlign: TextAlign.left,
             style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.w600, fontSize: 18),
@@ -40,7 +55,7 @@ class ChannelPage extends StatelessWidget {
               list: list[i]),
         const SizedBox(height: 10),
         GestureDetector(
-          onTap: handleCreateChannel,
+          onTap: list.isNotEmpty ? handleCreateChannel : handleCreateWorkspace,
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -50,7 +65,9 @@ class ChannelPage extends StatelessWidget {
             margin: const EdgeInsets.only(left: 20, right: 20),
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             child: Text(
-              "Create Channel",
+              list.isNotEmpty
+                  ? "Create Channel"
+                  : "Create your first Workspace",
               style: GoogleFonts.montserrat(),
             ),
           ),

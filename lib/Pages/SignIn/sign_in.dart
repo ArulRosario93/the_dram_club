@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/Home/home.dart';
@@ -22,10 +19,22 @@ class SignIn extends StatelessWidget {
     void showSnackbar(String text) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(text, style: GoogleFonts.montserrat(),),
+          content: Text(
+            text,
+            style: GoogleFonts.montserrat(),
+          ),
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+
+    void goHomePage() {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    }
+
+    void handleShowErr(String res) {
+      showSnackbar("Sign in failed: $res");
     }
 
     void handleSignIn() async {
@@ -34,24 +43,13 @@ class SignIn extends StatelessWidget {
         return;
       }
 
-      // if (await AuthServices().userExist(emailAdress.text) == false) {
-      //   showSnackbar("User does not exist");
-      //   return;
-      // }
-
       await AuthServices()
           .signInWithEmailAndPassword(emailAdress.text, password.text)
           .then((value) {
         if (value == "SUCCESS") {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const HomePage()));
+          goHomePage();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Sign in failed: $value"),
-              duration: const Duration(seconds: 2),
-            ),
-          );
+          handleShowErr(value);
         }
       });
     }
@@ -60,16 +58,10 @@ class SignIn extends StatelessWidget {
       String res = await AuthServices().signInWithGoogle();
 
       if (res == "SUCCESS") {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
+        goHomePage();
       } else {
         // snackbar to show the error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign in failed: $res'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
+        handleShowErr(res);
       }
     }
 

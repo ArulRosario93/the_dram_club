@@ -59,7 +59,7 @@ class AuthServices {
           email: email, password: password);
       User user = result.user!;
       await FirebaseFirestore.instance.collection("Users").doc(user.email).set({
-        "Name": user.displayName,
+        "Name": user.email,
         "Email-ID": user.email,
         "UID": user.uid,
         "profilePic": "",
@@ -127,6 +127,7 @@ class AuthServices {
     int strict,
     List roles,
     String role,
+    String description,
   ) async {
     // Create UUID
     String res = "Error";
@@ -140,10 +141,37 @@ class AuthServices {
           {
             "Name": workspaceName,
             "Role": role,
-            "Workspace-ID": id,
+            "Description": description,
+            "ID": id,
             "last-visited": true,
           }
         ]),
+      });
+
+      // assigning last visited false to all other workspaces
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(emailID)
+          .get()
+          .then((value) async {
+        List workspaces = value.data()!["Workspace"];
+        for (var i = 0; i < workspaces.length; i++) {
+          if (workspaces[i]["Workspace-ID"] != id) {
+            await FirebaseFirestore.instance
+                .collection("Users")
+                .doc(emailID)
+                .update({
+              "Workspace": FieldValue.arrayRemove([
+                {
+                  "Name": workspaces[i]["Name"],
+                  "Role": workspaces[i]["Role"],
+                  "Workspace-ID": workspaces[i]["Workspace-ID"],
+                  "last-visited": false,
+                }
+              ]),
+            });
+          }
+        }
       });
 
       await FirebaseFirestore.instance.collection("Workspace").doc(id).set({
@@ -156,6 +184,20 @@ class AuthServices {
         "Roles": roles,
         "Strict": strict,
         "Channels": [],
+        "Requests": [],
+        "Responses": []
+      });
+
+      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Files").doc("Files").set({
+        "Files": [],
+      });
+      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Messages").doc("Msg").set({
+        "Round1": [],
+        "roundCount": 0,
+        "currentRound": 1,
+      });
+      await FirebaseFirestore.instance.collection("Workspace").doc(id).collection("Files").doc("Users").set({
+        "Users": [],
       });
 
       res = "Success";
@@ -168,7 +210,7 @@ class AuthServices {
   }
 
   Future createChannel(String workspaceID, String channelName,
-      String description, String name, String emailID) async {
+      String description, String name, String emailID, List people) async {
     String res = "Error";
     try {
       final id = const Uuid().v1();
@@ -196,14 +238,15 @@ class AuthServices {
           .doc(workspaceID)
           .collection(id)
           .doc("Users")
-          .update({
-        "Users": FieldValue.arrayUnion([
+          .set({
+        "Users": [
           {
             "Name": name,
             "Email-ID": emailID,
             "Data-Joined": Timestamp.now(),
-          }
-        ])
+          },
+          ...people
+        ]
       });
       await FirebaseFirestore.instance
           .collection("Workspace")
@@ -407,5 +450,4 @@ class AuthServices {
       return false;
     }
   }
-
 }

@@ -1,10 +1,13 @@
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import "package:the_dram_club/Auth_services/auth_services.dart";
 import "package:the_dram_club/Pages/CreateWorkspace/create_workspace.dart";
 
 class DrawerMain extends StatelessWidget {
   final List list;
-  const DrawerMain({super.key, required this.list});
+  final String emailID;
+  final String userName;
+  const DrawerMain({super.key, required this.list, required this.emailID, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class DrawerMain extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const CreateWorkSpace(),
+            builder: (context) => CreateWorkSpace(emailID: emailID, userName: userName),
           ));
     }
 
@@ -43,8 +46,18 @@ class DrawerMain extends StatelessWidget {
                   children: [
                     if (list.isEmpty)
                       ListTile(
+                        // tileColor: Colors.grey,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        leading: const Icon(
+                          Icons.add,
+                          color: Colors.blue,
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        onTap: createWorkspace,
                         title: Text(
-                          "Create a Workspace to get started",
+                          "Create Workspace",
                           style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w600, color: Colors.white),
                         ),
@@ -122,6 +135,7 @@ class DrawerMain extends StatelessWidget {
                     Icons.logout,
                     color: Colors.red,
                   ),
+                  onTap: () async => await AuthServices().signOut(),
                   title: Text(
                     "Logout",
                     style: GoogleFonts.montserrat(

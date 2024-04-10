@@ -24,24 +24,35 @@ class _HomePageState extends State<HomePage> {
 
   var curentWorkspace;
 
+  void handleFirstIntialData(val) {
+    user = val;
+    print(val['Workspace']);
+    workspace = val['Workspace'];
+    if (workspace.isNotEmpty) {
+      curentWorkspaceShortBrief = val['Workspace'].firstWhere(
+        (element) => element['lastVisited'] == true,
+      );
+    }
+    loading = false;
+    setState(() {});
+  }
+
+  void handleSecondIntialData() async {
+    if (workspace.isNotEmpty) {
+      await AuthServices()
+          .getWorkspace(curentWorkspaceShortBrief["ID"])
+          .then((value) => {
+                curentWorkspace = value,
+              });
+      setState(() {});
+    }
+  }
+
   void handleInitialData() async {
     await AuthServices()
         .getUser()
-        .then((value) => {
-              user = value,
-              workspace = value['Workspace'],
-              curentWorkspaceShortBrief = value['Workspace'].firstWhere(
-                (element) => element['lastVisited'] == true,
-              ),
-              loading = false,
-            })
-        .then((val) => AuthServices()
-            .getWorkspace(curentWorkspaceShortBrief["ID"])
-            .then((value) => {
-                  curentWorkspace = value,
-                }));
-
-    setState(() {});
+        .then(handleFirstIntialData)
+        .then((val) => handleSecondIntialData);
   }
 
   void handlePage(int val) {
@@ -65,7 +76,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List pages = [
       ChannelPage(
-        userID: user?['Email-ID']?? "",
+          userID: user?['Email-ID'] ?? "",
+          userName: user?['Name'] ?? "",
           list: curentWorkspace?['Channels'] ?? [],
           workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
 
@@ -88,10 +100,10 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        drawer: DrawerMain(list: workspace),
+        drawer: DrawerMain(list: workspace, userName: user?['Name'] ?? "", emailID: user?['Email-ID'] ?? "",),
         appBar: AppBar(
           title: Text(
-            curentWorkspaceShortBrief['Name'],
+            curentWorkspaceShortBrief?['Name'] ?? "The Dram Club",
             style: GoogleFonts.montserrat(),
           ),
           actions: [
