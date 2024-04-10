@@ -348,6 +348,7 @@ class AuthServices {
     String emailID,
     String name,
     String workspaceName,
+    String role,
     String workspaceDescription,
   ) async {
     String res = "Error";
@@ -359,6 +360,7 @@ class AuthServices {
             "Name": workspaceName,
             "Description": workspaceDescription,
             "ID": workspaceID,
+            "Role": role,
             "lastVisited": false,
           }
         ])

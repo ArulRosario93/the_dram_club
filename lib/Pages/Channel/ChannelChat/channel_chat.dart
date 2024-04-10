@@ -7,7 +7,12 @@ class Channelchat extends StatefulWidget {
   final String workspaceID;
   final String channelID;
   final String userEmailID;
-  const Channelchat({super.key, required this.workspaceID, required this.channelID, required this.handleMsg, required this.userEmailID});
+  const Channelchat(
+      {super.key,
+      required this.workspaceID,
+      required this.channelID,
+      required this.handleMsg,
+      required this.userEmailID,});
 
   @override
   State<Channelchat> createState() => _ChannelchatState();

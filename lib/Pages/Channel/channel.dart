@@ -108,7 +108,10 @@ class _ChannelState extends State<Channel> {
       ChannelFiles(),
 
       //All Users
-      ChannelUsers(),
+      ChannelUsers(
+        channelName: widget.channel["Name"] ?? 'Channel Name',
+        allUsers: widget.channel["All-Users"] ?? [],
+      ),
     ];
 
     return Scaffold(
