@@ -5,10 +5,26 @@ import 'package:the_dram_club/Pages/LeaveForm/StudentForm/studnet_form.dart';
 import 'package:the_dram_club/Pages/LeaveForm/TeacherForm/teacher_form.dart';
 
 class LeaveForm extends StatefulWidget {
-  final int role;
+  final String role;
   final int strict;
-
-  const LeaveForm({super.key, required this.role, required this.strict});
+  final List allForms;
+  final String workspaceID;
+  final String emailID;
+  final String userName;
+  final String userDP;
+  final int userAttandance;
+  final int roleInt;
+  const LeaveForm(
+      {super.key,
+      required this.role,
+      required this.strict,
+      required this.workspaceID,
+      required this.emailID,
+      required this.userName,
+      required this.allForms,
+      required this.userDP,
+      required this.userAttandance,
+      required this.roleInt});
 
   @override
   State<LeaveForm> createState() => _LeaveFormState();
@@ -33,10 +49,24 @@ class _LeaveFormState extends State<LeaveForm> {
   Widget build(BuildContext context) {
     List<Widget> Pages = [
       // Student Form/ Teacher Form
-      widget.role == 0 || widget.role == 1? TeacherForm(): StudentForm(),
+      widget.roleInt == 0 || widget.roleInt == 1
+          ? TeacherForm(
+              requests: widget.allForms[0],
+              userID: widget.emailID,
+              userName: widget.userName,
+              roleName: widget.role,
+              workspaceID: widget.workspaceID)
+          : StudentForm(
+              workspaceID: widget.workspaceID,
+              emailID: widget.emailID,
+              name: widget.userName,
+              userDP: widget.userDP,
+              userAttandance: widget.userAttandance),
 
       //Student form or All Forms
-      AllForms(),
+      AllForms(
+        allForms: widget.allForms,
+      ),
     ];
 
     return Container(
@@ -65,7 +95,7 @@ class _LeaveFormState extends State<LeaveForm> {
                         )),
                         alignment: Alignment.center,
                         child: Text(
-                          "Student Form",
+                          widget.roleInt == 0 ? "Admin Forms" : "Student Form",
                           style: GoogleFonts.montserrat(
                               color: _selectedIndex == 0
                                   ? Colors.black

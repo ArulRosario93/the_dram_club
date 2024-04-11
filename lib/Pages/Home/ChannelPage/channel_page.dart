@@ -9,12 +9,14 @@ class ChannelPage extends StatelessWidget {
   final String userName;
   final String userID;
   final String workspaceID;
+  final List allUsers;
   const ChannelPage(
       {super.key,
       required this.list,
       required this.workspaceID,
       required this.userID,
-      required this.userName});
+      required this.userName,
+      required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class ChannelPage extends StatelessWidget {
               subtitle: list[i]["Description"],
               userName: userName,
               userEmailID: userID,
+              allUsers: allUsers,
               list: list[i]),
         const SizedBox(height: 10),
         GestureDetector(

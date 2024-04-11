@@ -7,14 +7,19 @@ import 'package:the_dram_club/Pages/Channel/ChannelUsers/UserSearch/user_search.
 class ChannelUsers extends StatelessWidget {
   final String channelName;
   final List allUsers;
+  final String workSpaceID;
+  final String workspaceName;
+  final String userName;
+  final String userEmailID;
+  final String workspaceDescription;
   const ChannelUsers(
-      {super.key, required this.channelName, required this.allUsers});
+      {super.key, required this.channelName, required this.allUsers, required this.workSpaceID, required this.workspaceName, required this.userName, required this.userEmailID, required this.workspaceDescription});
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       UserSearch(),
-      AddUserToWorkspace(),
+      AddUserToWorkspace(allUsers: allUsers, workSpaceID: workSpaceID, workspaceName: workspaceName, userName: userName, userEmailID: userEmailID, workspaceDescription: workspaceDescription),
       GoToSelectUsersChannel(allUsers: allUsers),
       UserItem(),
       UserItem(),

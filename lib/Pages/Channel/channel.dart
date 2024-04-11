@@ -8,15 +8,21 @@ import 'package:the_dram_club/Pages/Channel/ChannelUsers/channel_users.dart';
 
 class Channel extends StatefulWidget {
   final channel;
+  final List allUsersWorkspace;
   final String userName;
   final String userEmailID;
   final String workspaceID;
+  final String workspaceName;
+  final String workspaceDescription;
   const Channel(
       {super.key,
       required this.channel,
       required this.workspaceID,
       required this.userName,
-      required this.userEmailID});
+      required this.userEmailID,
+      required this.allUsersWorkspace,
+      required this.workspaceName,
+      required this.workspaceDescription});
 
   @override
   State<Channel> createState() => _ChannelState();
@@ -95,6 +101,8 @@ class _ChannelState extends State<Channel> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.channel);
+
     List<Widget> pages = [
       //Chat,
       Channelchat(
@@ -110,7 +118,12 @@ class _ChannelState extends State<Channel> {
       //All Users
       ChannelUsers(
         channelName: widget.channel["Name"] ?? 'Channel Name',
-        allUsers: widget.channel["All-Users"] ?? [],
+        allUsers: widget.allUsersWorkspace,
+        workSpaceID: widget.workspaceID,
+        workspaceDescription: widget.workspaceDescription,
+        workspaceName: widget.workspaceName,
+        userEmailID: widget.userEmailID,
+        userName: widget.userName,
       ),
     ];
 

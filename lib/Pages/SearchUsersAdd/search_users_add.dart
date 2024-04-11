@@ -1,37 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:the_dram_club/Auth_services/auth_services.dart';
+import 'package:the_dram_club/Pages/Home/home.dart';
 import 'package:the_dram_club/Pages/SearchUsersAdd/UserItemtoAdd/userItemAdd.dart';
 
 class SearchUserAdd extends StatefulWidget {
-  const SearchUserAdd({super.key});
+  final List allUsers;
+  final String workSpaceID;
+  final String workspaceName;
+  final String userName;
+  final String userEmailID;
+  final String workspaceDescription;
+  const SearchUserAdd(
+      {super.key,
+      required this.allUsers,
+      required this.workSpaceID,
+      required this.workspaceName,
+      required this.userName,
+      required this.userEmailID,
+      required this.workspaceDescription});
 
   @override
   State<SearchUserAdd> createState() => _SearchUserAddState();
 }
 
 class _SearchUserAddState extends State<SearchUserAdd> {
-  List allUsers = [];
   List filteredUsers = [];
   List selectedUsers = [];
 
+  TextEditingController searchController = TextEditingController();
+
   void handleSelectedUsers(String email, String name) {
     if (selectedUsers
-        .any((ele) => ele['email'] == email && ele['name'] == name)) {
+        .any((ele) => ele['Email-ID'] == email && ele['Name'] == name)) {
       setState(() {
-        selectedUsers.removeWhere(
-            (element) => element['email'] == email && element['name'] == name);
+        selectedUsers.removeWhere((element) =>
+            element['Email-ID'] == email && element['Name'] == name);
       });
     } else {
       setState(() {
-        selectedUsers.add({'email': email, 'name': name});
+        selectedUsers.add({'Email-ID': email, 'Name': name});
       });
     }
     print(selectedUsers);
   }
 
+  void handleSearch(String val) {
+    setState(() {
+      filteredUsers = widget.allUsers
+          .where((element) => element['Name'].contains(val))
+          .toList();
+    });
+  }
+
+  void showMsg(String res) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(res),
+      ),
+    );
+  }
+
+  void goHome() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ));
+  }
+
+  void handleSubmit() async {
+    String res = await AuthServices().requestUsertoJoinWorkspace(
+        widget.workSpaceID,
+        widget.userName,
+        widget.userEmailID,
+        widget.workspaceName,
+        widget.workspaceDescription);
+
+    if (res == "Success") {
+      showMsg("Request Sent Successfully");
+      goHome();
+    } else {
+      showMsg(res);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.allUsers);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(),
@@ -60,9 +117,11 @@ class _SearchUserAddState extends State<SearchUserAdd> {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: searchController,
+                      onChanged: handleSearch,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search),
-                        hintText: "Search Users",
+                        hintText: "Search Users by Name",
                         hintStyle: GoogleFonts.montserrat(),
                         border: const OutlineInputBorder(
                             borderRadius:
@@ -79,7 +138,10 @@ class _SearchUserAddState extends State<SearchUserAdd> {
             Expanded(
               child: filteredUsers.isEmpty
                   ? LottieBuilder.asset(
+                      frameRate: FrameRate.composition,
                       "assets/Lottie/people.json",
+                      repeat: false,
+                      options: LottieOptions(enableMergePaths: true),
                       fit: BoxFit.fitWidth,
                     )
                   : SingleChildScrollView(
@@ -88,12 +150,12 @@ class _SearchUserAddState extends State<SearchUserAdd> {
                         children: [
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 20,
+                            itemCount: filteredUsers.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return UserItemAdd(
-                                userEmailID: "Arul Rosario $index",
-                                userName: "itsarrowhere380@gmail.com",
+                                userEmailID: filteredUsers[index]["Email-ID"],
+                                userName: filteredUsers[index]["Name"],
                                 selectedUsers: handleSelectedUsers,
                               );
                             },

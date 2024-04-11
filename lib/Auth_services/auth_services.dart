@@ -499,13 +499,138 @@ class AuthServices {
     return res;
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> channelChat(String workspaceID, String channelID) {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> channelChat(
+      String workspaceID, String channelID) {
     return FirebaseFirestore.instance
         .collection("Workspace")
         .doc(workspaceID)
         .collection(channelID)
         .doc("Messages")
         .snapshots();
+  }
+
+  //Leave and responses
+  Future<String> sendLeaveRequest(
+    String workspaceID,
+    String emailID,
+    String name,
+    String reason,
+    String startDate,
+    String endDate,
+    String type,
+    String userDP,
+    int attandancePercenatge,
+  ) async {
+    String res = "Error";
+
+    final requestID = const Uuid().v1();
+
+    try {
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .update({
+        "Requests": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Reason": reason,
+            "type": type,
+            "Request-ID": requestID,
+            "Start-Date": startDate,
+            "End-Date": endDate,
+            "Status": "Pending",
+            "Profile-Pic": userDP,
+            "Attandance-Percentage": attandancePercenatge,
+            "Time":
+                "${Timestamp.now().toDate().day} / ${Timestamp.now().toDate().month}",
+          }
+        ])
+      });
+
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
+  Future<String> sendLeaveResponse(
+    String workspaceID,
+    String emailID,
+    String name,
+    String reason,
+    String type,
+    String startDate,
+    String endDate,
+    String requestID,
+    String responseType,
+    int userAttandancePercentage,
+    String time,
+    String responseBy,
+    String roleName,
+    String responsebehavior,
+    String response,
+    String studentDP,
+  ) async {
+    String res = "Error";
+
+    try {
+      //Remove request from the workspace with the request ID
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .update({
+        "Requests": FieldValue.arrayRemove([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Reason": reason,
+            "type": type,
+            "Request-ID": requestID,
+            "Start-Date": startDate,
+            "End-Date": endDate,
+            "Status": "Pending",
+            "Profile-Pic": studentDP,
+            "Attandance-Percentage": userAttandancePercentage,
+            "Time": time,
+          }
+        ])
+      });
+      
+      //Add response to the workspace
+      await FirebaseFirestore.instance
+          .collection("Workspace")
+          .doc(workspaceID)
+          .update({
+        "Responses": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "Request-ID": requestID,
+            "Response": response,
+            "Reason": reason,
+            "Role": roleName,
+            "Response-By": responseBy,
+            "type": type,
+            "Start-Date": startDate,
+            "userSubmittedtime": time,
+            "End-Date": endDate,
+            "Response-Behavior": responsebehavior,
+            "Attandance-Percentage": userAttandancePercentage,
+            "Status": responseType,
+            "Response-Time": Timestamp.now(),
+          }
+        ])
+      });
+
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
   }
 
   Future<String> signInWithEmailAndPassword(

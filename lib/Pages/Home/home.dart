@@ -78,12 +78,23 @@ class _HomePageState extends State<HomePage> {
           userID: user?['Email-ID'] ?? "",
           userName: user?['Name'] ?? "",
           list: curentWorkspace?['Channels'] ?? [],
+          allUsers: curentWorkspace?["All-Users"] ?? [],
           workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
 
       // 0, 1, 2
-      const LeaveForm(
-        role: 1,
+      LeaveForm(
+        role: curentWorkspaceShortBrief?["Role"]?? "",
+        roleInt: curentWorkspaceShortBrief?["RoleInt"]?? 0,
         strict: 2,
+        allForms: [
+          curentWorkspace?["Requests"] ?? [],
+          curentWorkspace?["Responses"] ?? []
+        ],
+        workspaceID: curentWorkspaceShortBrief?["ID"] ?? "",
+        emailID: user?['Email-ID'] ?? "",
+        userName: user?['Name'] ?? "",
+        userDP: user?['profilePic'] ?? "",
+        userAttandance: user?['Attandance-Record'] ?? 0,
       ),
       // "Profile",
     ];

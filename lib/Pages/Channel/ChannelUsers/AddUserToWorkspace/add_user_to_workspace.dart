@@ -3,15 +3,36 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Pages/SearchUsersAdd/search_users_add.dart';
 
 class AddUserToWorkspace extends StatelessWidget {
-  const AddUserToWorkspace({super.key});
+  final List allUsers;
+  final String workSpaceID;
+  final String workspaceName;
+  final String userName;
+  final String userEmailID;
+  final String workspaceDescription;
+  const AddUserToWorkspace(
+      {super.key,
+      required this.allUsers,
+      required this.workSpaceID,
+      required this.workspaceName,
+      required this.userName,
+      required this.userEmailID,
+      required this.workspaceDescription});
 
   @override
   Widget build(BuildContext context) {
     void handlegotoSearchUserAdd() {
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SearchUserAdd()),
-      );
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchUserAdd(
+              allUsers: allUsers,
+              workSpaceID: workSpaceID,
+              userEmailID: userEmailID,
+              userName: userName,
+              workspaceDescription: workspaceDescription,
+              workspaceName: workspaceName,
+            ),
+          ));
     }
 
     return Container(

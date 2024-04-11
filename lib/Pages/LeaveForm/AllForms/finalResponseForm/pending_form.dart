@@ -1,20 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FormItem extends StatelessWidget {
+class PendingForm extends StatelessWidget {
   final dynamic form;
-  const FormItem({super.key, required this.form});
+  const PendingForm({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {
-    print(form["Attandance-Percentage"]);
     void handleExpand() async {
-
-      Timestamp time = form["Time"];
-      Timestamp startTime = form["Start-Date"];
-      Timestamp endTime = form["End-Date"];
-
       return showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -25,11 +18,7 @@ class FormItem extends StatelessWidget {
               title: Text(
                 'Form ${form["Status"]}',
                 style: GoogleFonts.montserrat(
-                    color: form["Status"] == "Rejected"
-                        ? Colors.red
-                        : form["Status"] == "Pending"
-                            ? Colors.yellow
-                            : Colors.green,
+                    color: Colors.yellow,
                     fontSize: 22,
                     fontWeight: FontWeight.w600),
               ),
@@ -42,29 +31,27 @@ class FormItem extends StatelessWidget {
                         Container(
                           width: 40,
                           height: 40,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            image: form["Profile-Pic"] != ""
-                                ? DecorationImage(
-                                    image: NetworkImage(form["Profile-Pic"]),
-                                    fit: BoxFit.cover)
-                                : null,
                           ),
-                          child: form["Profile-Pic"] == ""
-                              ? const Icon(Icons.person, color: Colors.black,)
+                          child: form?["Profile-Pic"] == null || form["Profile-Pic"] == "" 
+                              ? const Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                )
                               : null,
                         ),
                         Expanded(
                           child: ListTile(
                             title: Text(
-                              form["Name"],
+                              form?["Name"],
                               style: GoogleFonts.montserrat(
                                   color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500),
                             ),
                             subtitle: Text(
-                              form["Email-ID"],
+                              form?["Email-ID"],
                               style: GoogleFonts.montserrat(
                                   color: Colors.white70,
                                   fontSize: 12,
@@ -77,7 +64,7 @@ class FormItem extends StatelessWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        Text("Attendance Percentage: ",
+                        Text("Attandance-Percentage: ",
                             style: GoogleFonts.montserrat(
                                 color: Colors.green,
                                 fontSize: 14,
@@ -105,7 +92,7 @@ class FormItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "Applied ${form["type"]} on ${time.toDate().day} / ${time.toDate().month}",
+                      "Applied ${form["type"]} on ${form["Time"]}",
                       style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontSize: 14,
@@ -120,66 +107,26 @@ class FormItem extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      "From: ${startTime.toDate().day}/${startTime.toDate().month} To: ${endTime.toDate().day}/${endTime.toDate().month} ",
+                      "From: ${form["Start-Date"]} To: ${form["End-Date"]} ",
                       style: GoogleFonts.montserrat(
                           color: const Color.fromARGB(216, 255, 255, 255),
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
                     ),
-                    // // form["Status"] == "Approved"? Row(
-                    // //   children: [
-                    // //     Text(
-                    // //       "Approved by: ",
-                    // //       style: GoogleFonts.montserrat(
-                    // //           color: Colors.green,
-                    // //           fontSize: 14,
-                    // //           fontWeight: FontWeight.w600),
-                    // //     ),
-                    // //     Text("Arul Rosario ",
-                    // //         style: GoogleFonts.montserrat(
-                    // //             color: Colors.white,
-                    // //             fontSize: 14,
-                    // //             fontWeight: FontWeight.w400)),
-                    // //     Expanded(
-                    // //       child: Text("(Higher Authority)",
-                    // //           style: GoogleFonts.montserrat(
-                    // //               color: Colors.white70,
-                    // //               fontSize: 14,
-                    // //               fontWeight: FontWeight.w400)),
-                    // //     )
-                    // //   ],
-                    // // ),
-                    // // Row(
-                    // //   children: [
-                    // //     Text(
-                    // //       "Rejected by: ",
-                    // //       style: GoogleFonts.montserrat(
-                    // //           color: Colors.red,
-                    // //           fontSize: 14,
-                    // //           fontWeight: FontWeight.w600),
-                    // //     ),
-                    // //     Text("Arul Rosario ",
-                    // //         style: GoogleFonts.montserrat(
-                    // //             color: Colors.white,
-                    // //             fontSize: 14,
-                    // //             fontWeight: FontWeight.w400)),
-                    // //     Expanded(
-                    // //       child: Text("(Higher Authority)",
-                    // //           style: GoogleFonts.montserrat(
-                    // //               color: Colors.white70,
-                    // //               fontSize: 14,
-                    // //               fontWeight: FontWeight.w400)),
-                    // //     )
-                    // //   ],
-                    // // ),
-                    // const SizedBox(height: 10),
-                    // Text(
-                    //   "Reason: Going to Hospital is not a valid reason.",
-                    //   style: GoogleFonts.montserrat(
-                    //       color: Colors.white,
-                    //       fontSize: 14,
-                    //       fontWeight: FontWeight.w400),
-                    // ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Text(
+                          "Pending",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.yellow,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    
                   ],
                 ),
               ),
@@ -197,8 +144,6 @@ class FormItem extends StatelessWidget {
             );
           });
     }
-
-    // return Text("Maja sojana");
 
     return Container(
       // duration: const Duration(milliseconds: 300),
@@ -244,8 +189,8 @@ class FormItem extends StatelessWidget {
                 ),
               ),
               const Icon(
-                Icons.rule,
-                color: Colors.red,
+                Icons.pending_actions,
+                color: Colors.yellow,
               )
             ],
           ),

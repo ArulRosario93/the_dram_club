@@ -39,6 +39,7 @@ dependencies:
   lottie: ^3.1.0
   percent_indicator: ^4.2.3
   swipe_widget: ^0.0.2+1
+  syncfusion_flutter_datepicker: ^25.1.39
   uuid: ^4.4.0
   vibration: ^1.8.4
 

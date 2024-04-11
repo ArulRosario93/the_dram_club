@@ -8,6 +8,7 @@ class HoveringWidget extends StatelessWidget {
   final String workspaceID;
   final String userName;
   final String userEmailID;
+  final List allUsers;
   final list;
 
   const HoveringWidget(
@@ -17,7 +18,8 @@ class HoveringWidget extends StatelessWidget {
       required this.subtitle,
       required this.list,
       required this.userName,
-      required this.userEmailID});
+      required this.userEmailID,
+      required this.allUsers});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,12 @@ class HoveringWidget extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  Channel(channel: list, workspaceID: workspaceID, userName: userName, userEmailID: userEmailID)));
+              builder: (context) => Channel(
+                  channel: list,
+                  allUsersWorkspace: allUsers,
+                  workspaceID: workspaceID,
+                  userName: userName,
+                  userEmailID: userEmailID)));
     }
 
     return Container(
