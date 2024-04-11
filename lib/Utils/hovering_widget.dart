@@ -8,7 +8,9 @@ class HoveringWidget extends StatelessWidget {
   final String workspaceID;
   final String userName;
   final String userEmailID;
-  final List allUsers;
+  final allUsers;
+  final String workspaceDescription;
+  final String workspaceName;
   final list;
 
   const HoveringWidget(
@@ -19,7 +21,9 @@ class HoveringWidget extends StatelessWidget {
       required this.list,
       required this.userName,
       required this.userEmailID,
-      required this.allUsers});
+      required this.allUsers, 
+      required this.workspaceDescription,
+      required this.workspaceName});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,8 @@ class HoveringWidget extends StatelessWidget {
                   allUsersWorkspace: allUsers,
                   workspaceID: workspaceID,
                   userName: userName,
+                  workspaceDescription: workspaceDescription,
+                  workspaceName: workspaceName,
                   userEmailID: userEmailID)));
     }
 

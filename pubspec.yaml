@@ -30,14 +30,17 @@ environment:
 dependencies:
   cloud_firestore: ^4.15.9
   cupertino_icons: ^1.0.6
+  dialog_flowtter: 0.2.0-nullsafety.0
   firebase_auth: ^4.17.9
   firebase_core: ^2.27.1
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
   google_fonts: ^6.2.1
   google_sign_in: ^5.2.1
   lottie: ^3.1.0
   percent_indicator: ^4.2.3
+  persistent_bottom_nav_bar: ^5.0.2
   swipe_widget: ^0.0.2+1
   syncfusion_flutter_datepicker: ^25.1.39
   uuid: ^4.4.0
@@ -61,6 +64,8 @@ flutter:
   assets:
     - assets/Lottie/workingLottie.json
     - assets/Lottie/people.json
+    - assets/service.json
+    - .env
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

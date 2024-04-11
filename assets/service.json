@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "the-dram-club-3eb71",
+  "private_key_id": "8e3713c417ff45b9004e08e3726607122dde55df",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCYqEI2sj1wn8j3\nFXvSqvOOe0ram8iXtY7/UjnDBJ2ElLlhLKaB9GRf3yHFbml6RRptpJqXoTDUoMhp\nZ1dIttPkhNLuIdu342I0AWMa1+eaxflWmOvVXHxOV3aoWAnpDgbFsT96aiBnaGAF\npXnxIg4dqQQjFrk4c9nVVySx6xpX0TQV/t3EtDO1QcsSBDAbYERAchqud8Z1nCmL\ndEA2zMeLHbTlHOkpsmiknjV4tprGLDWRi+Xu5S4YyvTXpq0n8lPCGSRiDK1nx9zt\nQ8o91Zqa19QdDkoLVQXHVus6NFZ0u1wFU8QXhtlfeksnOIY4aKOCe70stLjy31GA\nBcMQiaZTAgMBAAECggEAHO6+5ejwNhlCmHnM5weZc6awcDBYW1CA0qk941VLmWYq\noF07DaRJJdZ/axDbEt5n/OHWnuhg/dufQELiyxhDnqsB4zotj3OcGCkvJFZJQg9F\ni4EeKWkG8j4ncg6FilMrO2q1kjjs/UxN7qQHMYl3zW1MKG5VGnryjTmf7cyWSJBF\n6RHYUHjnPLqUwKUOdN5x8W4XHAiIiuM6jJEKD3GcLv1unqDCWy6GknD/9+8HE//0\n1DVtIPStjoDs1AUqWpUOlhmGGQZg/YSptXW/SJYZgeHVUymPhUgAXNAV/QX3k98w\nUEfXYAt6ZGahSEI2EE/2eDQHzdlLRSI+C16IL4TjuQKBgQDMoz50Uuqm8cc2Mz3J\n9Xw3WBTVfoKa4b1aKmEbt990a+qJRFxdtYqFEYOvJenTmjVeJXxm0cnFTXVHwKFN\nMdaMjCHYRwoEFk+swBPKgjwbgJS8DCCRFgEqwCZBkZDwKX0hH91eCm4jNSWBvqhC\nAYJ59WDkq3kTPniZ2rpFzfChRQKBgQC++RLdmOv0US2XoJkIpAxY675lMUi7oneV\nvI00RfeTX05Cpfq1C+QWF05+zVP1378tPWTGWwDvaq7pZYvUFbIQjzoMwkX+qt0C\nRmJqvAD/0GNNtveZ8XErs1FVhoI0ZlmzIHyxHbYfq/ghK1H/CR+GcC2pqQI+yfLy\nJUXPXs/GtwKBgDNQlC6zRChM5LmQq+Pi7R0rtz26FaIlDUh47BT5TM1y6kM1ozvU\ndEHeHHllNndbahqLp+BYpxIU1F4Dze7/ml9wHGSRm89ekOgu2kej1NLIsYNePyRi\nsjQ4Lt+uUvwGS1xtEyOr1eZ6Q0d/uc2jd0aB46Qz446R0cgy8xbiB39JAoGBAL1J\nJzfZYNYyuBv4JHb6Evr3/ylRpiPErv8Nem/7gZ7i8jEBTvOwK4zx4O2yGqwz78up\ndH9eqBimB2RzMBswvePH8uO+k54OQS0GEnp0ihEEvcjDt7swItoLzGwW/Gtvnyz6\n4Fy1dFUEINbPl2BP7J1WBwyI5h7SECmOZBlcglkVAoGAQFdCtMj9h5X1qEnAKhmy\nSPUd3tPJ0p98+0sb4R4doeYNqnjxWsfnLqXbXMzk4Izheb13h/dAXsVMGDLYmFaE\nmGUy/3URp9LBCA+MD4pLk0KziixGpQbTJGQFd9bq5I1dtW/johhMl08vYJS5fNef\nH1tn8Y9jN0a2HnKZxS3c7EU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "drammy@the-dram-club-3eb71.iam.gserviceaccount.com",
+  "client_id": "109550265225045134581",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/drammy%40the-dram-club-3eb71.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

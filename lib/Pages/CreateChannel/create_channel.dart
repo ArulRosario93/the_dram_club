@@ -8,7 +8,11 @@ class CreateChannel extends StatefulWidget {
   final String workspaceID;
   final String userName;
   final String userEmailID;
-  const CreateChannel({super.key, required this.workspaceID, required this.userName, required this.userEmailID});
+  const CreateChannel(
+      {super.key,
+      required this.workspaceID,
+      required this.userName,
+      required this.userEmailID});
 
   @override
   State<CreateChannel> createState() => _CreateChannelState();
@@ -77,6 +81,7 @@ class _CreateChannelState extends State<CreateChannel> {
 
     return Scaffold(
       backgroundColor: Colors.deepPurple[400],
+      appBar: AppBar(),
       body: SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

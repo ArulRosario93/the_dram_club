@@ -4,7 +4,7 @@ import 'package:the_dram_club/Pages/CreateChannel/SelectUsers/select_users.dart'
 import 'package:the_dram_club/Pages/SearchUsersAddChannel/search_users_add_channel.dart';
 
 class GoToSelectUsersChannel extends StatelessWidget {
-  final List allUsers;
+  final allUsers;
   const GoToSelectUsersChannel({super.key, required this.allUsers});
 
   @override

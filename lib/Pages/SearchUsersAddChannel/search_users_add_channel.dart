@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Pages/SearchUsersAdd/UserItemtoAdd/userItemAdd.dart';
 
 class SearchUsersAddChannel extends StatefulWidget {
-  final List allUsers;
+  final allUsers;
   const SearchUsersAddChannel({super.key, required this.allUsers});
 
   @override

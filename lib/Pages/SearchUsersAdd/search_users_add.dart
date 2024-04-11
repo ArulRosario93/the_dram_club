@@ -49,9 +49,11 @@ class _SearchUserAddState extends State<SearchUserAdd> {
   void handleSearch(String val) {
     setState(() {
       filteredUsers = widget.allUsers
-          .where((element) => element['Name'].contains(val))
+          .where((element) => element['Email-ID'].contains(val))
           .toList();
     });
+
+    print(val);
   }
 
   void showMsg(String res) {
@@ -71,12 +73,17 @@ class _SearchUserAddState extends State<SearchUserAdd> {
   }
 
   void handleSubmit() async {
-    String res = await AuthServices().requestUsertoJoinWorkspace(
-        widget.workSpaceID,
-        widget.userName,
-        widget.userEmailID,
-        widget.workspaceName,
-        widget.workspaceDescription);
+    String res = "Failed to send request";
+    for (var i = 0; i < selectedUsers.length; i++) {
+      res = await AuthServices().requestUsertoJoinWorkspace(
+          widget.workSpaceID,
+          selectedUsers[i]["Name"],
+          "student",
+          2,
+          selectedUsers[i]["Email-ID"],
+          widget.workspaceName,
+          widget.workspaceDescription);
+    }
 
     if (res == "Success") {
       showMsg("Request Sent Successfully");
@@ -89,6 +96,7 @@ class _SearchUserAddState extends State<SearchUserAdd> {
   @override
   Widget build(BuildContext context) {
     print(widget.allUsers);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(),
@@ -165,30 +173,34 @@ class _SearchUserAddState extends State<SearchUserAdd> {
                     ),
             ),
             selectedUsers.isNotEmpty
-                ? Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Add ${selectedUsers.length} Users",
-                          style: GoogleFonts.montserrat(
-                              color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        const Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        )
-                      ],
+                ? GestureDetector(
+                    onTap: handleSubmit,
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurpleAccent,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Add ${selectedUsers.length} Users",
+                            style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 : const SizedBox(),

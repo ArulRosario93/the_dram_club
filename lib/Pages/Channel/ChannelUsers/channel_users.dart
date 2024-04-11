@@ -6,7 +6,7 @@ import 'package:the_dram_club/Pages/Channel/ChannelUsers/UserSearch/user_search.
 
 class ChannelUsers extends StatelessWidget {
   final String channelName;
-  final List allUsers;
+  final allUsers;
   final String workSpaceID;
   final String workspaceName;
   final String userName;
@@ -20,9 +20,10 @@ class ChannelUsers extends StatelessWidget {
     return Column(children: [
       UserSearch(),
       AddUserToWorkspace(allUsers: allUsers, workSpaceID: workSpaceID, workspaceName: workspaceName, userName: userName, userEmailID: userEmailID, workspaceDescription: workspaceDescription),
+      const SizedBox(height: 10),
       GoToSelectUsersChannel(allUsers: allUsers),
       UserItem(),
-      UserItem(),
+      // UserItem(),
     ]);
   }
 }

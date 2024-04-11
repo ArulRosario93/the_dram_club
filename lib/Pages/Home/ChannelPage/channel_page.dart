@@ -9,14 +9,18 @@ class ChannelPage extends StatelessWidget {
   final String userName;
   final String userID;
   final String workspaceID;
-  final List allUsers;
+  final allUsers;
+  final String workspaceDescription;
+  final String workspaceName;
   const ChannelPage(
       {super.key,
       required this.list,
       required this.workspaceID,
       required this.userID,
       required this.userName,
-      required this.allUsers});
+      required this.allUsers, 
+      required this.workspaceDescription,
+      required this.workspaceName});
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,8 @@ class ChannelPage extends StatelessWidget {
               userName: userName,
               userEmailID: userID,
               allUsers: allUsers,
+              workspaceDescription: workspaceDescription,
+              workspaceName: workspaceName,
               list: list[i]),
         const SizedBox(height: 10),
         GestureDetector(
@@ -64,7 +70,7 @@ class ChannelPage extends StatelessWidget {
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.blue[400],
               borderRadius: BorderRadius.circular(10),
             ),
             margin: const EdgeInsets.only(left: 20, right: 20),
@@ -73,7 +79,7 @@ class ChannelPage extends StatelessWidget {
               workspaceID.isNotEmpty
                   ? "Create Channel"
                   : "Create your first Workspace",
-              style: GoogleFonts.montserrat(),
+              style: GoogleFonts.montserrat(color: Colors.white),
             ),
           ),
         )

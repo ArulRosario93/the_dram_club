@@ -16,7 +16,7 @@ class _UserItemAddState extends State<UserItemAdd> {
   bool isSelected = false;
 
   void handleTap() {
-    widget.selectedUsers(widget.userName, widget.userEmailID);
+    widget.selectedUsers(widget.userEmailID, widget.userName);
     setState(() {
       isSelected = !isSelected;
     });

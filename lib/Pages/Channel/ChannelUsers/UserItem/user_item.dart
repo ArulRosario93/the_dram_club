@@ -110,11 +110,11 @@ class UserItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'User Name',
+                      'Arul Rosario',
                       style: GoogleFonts.montserrat(),
                     ),
                     Text(
-                      'User Email',
+                      'itsarrowhere380@gmail.com',
                       style: GoogleFonts.montserrat(color: Colors.grey[500]),
                     ),
                   ],

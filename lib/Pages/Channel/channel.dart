@@ -8,7 +8,7 @@ import 'package:the_dram_club/Pages/Channel/ChannelUsers/channel_users.dart';
 
 class Channel extends StatefulWidget {
   final channel;
-  final List allUsersWorkspace;
+  final allUsersWorkspace;
   final String userName;
   final String userEmailID;
   final String workspaceID;
@@ -101,7 +101,7 @@ class _ChannelState extends State<Channel> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.channel);
+    // print(widget.allUsersWorkspace["Users"]);
 
     List<Widget> pages = [
       //Chat,

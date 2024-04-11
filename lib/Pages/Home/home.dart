@@ -1,10 +1,13 @@
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
+import 'package:the_dram_club/Pages/ChatBot/chat_bot.dart';
 import 'package:the_dram_club/Pages/Home/ChannelPage/channel_page.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
 import 'package:the_dram_club/Pages/Notifications/notification.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,13 +18,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var user;
+  var allUsers;
   int _selectedIndex = 0;
   var workspace = [];
   bool loading = true;
-
   var curentWorkspaceShortBrief;
-
+  late DialogFlowtter dialogFlowtter;
   var curentWorkspace;
+  final PersistentTabController _controllerforBottomPage = PersistentTabController(initialIndex: 0);
 
   void handleFirstIntialData(val) {
     setState(() {
@@ -34,6 +38,9 @@ class _HomePageState extends State<HomePage> {
       }
       loading = false;
     });
+    // DialogAuthCredentials credentials = DialogAuthCredentials.fromJson(json);
+    dialogFlowtter =
+        DialogFlowtter(sessionId: "123456", jsonPath: "assets/service.json");
   }
 
   void handleSecondIntialData(val) async {
@@ -47,11 +54,71 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void handleThirdIntialData(val) async {
+    await AuthServices().getAllUsers().then((value) => {
+          setState(() {
+            allUsers = value.docs.map((e) => e.data()).toList();
+          })
+        });
+  }
+
   void handleInitialData() async {
     await AuthServices()
         .getUser()
         .then(handleFirstIntialData)
-        .then(handleSecondIntialData);
+        .then(handleSecondIntialData)
+        .then(handleThirdIntialData);
+  }
+
+  //For Chat Bot
+  final ScrollController _scrollController = ScrollController();
+
+  bool openBot = false;
+  List messages = [
+    {
+      "text": "Hello, I am your assistant Drammy. How you doin?",
+      "isUser": false
+    }
+  ];
+  void handleMsg(String msg) {
+    // setState(() {
+    //   messages.add(msg);
+    // });
+    handleDetectIntent(msg);
+  }
+
+  void handleDetectIntent(String msg) async {
+    await dialogFlowtter
+        .detectIntent(
+            queryInput: QueryInput(
+          text: TextInput(text: msg),
+        ))
+        .then((value) => setState(() {
+              messages.add({
+                "text": value.message?.text?.text?[0] ?? "",
+                "isUser": false
+              });
+            }));
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
+
+  void handleCloseBot() {
+    // setState(() {
+    //   openBot = false;
+    // });
+    handleCloseitNow();
+  }
+
+  void handleCloseitNow(){
+    setState(() {
+      openBot = false;
+    });
   }
 
   void handlePage(int val) {
@@ -61,8 +128,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleGotogetStarted() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const NotificationPage()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NotificationPage(
+                emailID: user?['Email-ID'] ?? "",
+                userDP: user?['profilePic'] ?? "",
+                name: user?['Name'] ?? "")));
   }
 
   @override
@@ -73,18 +145,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(allUsers ?? []);
     List pages = [
       ChannelPage(
           userID: user?['Email-ID'] ?? "",
           userName: user?['Name'] ?? "",
           list: curentWorkspace?['Channels'] ?? [],
-          allUsers: curentWorkspace?["All-Users"] ?? [],
+          allUsers: allUsers ?? [],
+          workspaceName: curentWorkspaceShortBrief?["Name"] ?? "",
+          workspaceDescription: curentWorkspaceShortBrief?["Description"] ?? "",
           workspaceID: curentWorkspaceShortBrief?["ID"] ?? ""),
 
       // 0, 1, 2
       LeaveForm(
-        role: curentWorkspaceShortBrief?["Role"]?? "",
-        roleInt: curentWorkspaceShortBrief?["RoleInt"]?? 0,
+        role: curentWorkspaceShortBrief?["Role"] ?? "",
+        roleInt: curentWorkspaceShortBrief?["RoleInt"] ?? 0,
         strict: 2,
         allForms: [
           curentWorkspace?["Requests"] ?? [],
@@ -110,6 +185,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+        extendBody: true,
+        // extendBodyBehindAppBar: true,
         drawer: DrawerMain(
           list: workspace,
           userName: user?['Name'] ?? "",
@@ -130,10 +207,41 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 10)
           ],
         ),
-        bottomNavigationBar: Container(
+        floatingActionButton: AnimatedContainer(
+          duration: Durations.extralong1,
+          curve: Curves.easeInOut,
+          alignment: Alignment.bottomRight,
+          decoration: BoxDecoration(
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: openBot ? MediaQuery.of(context).size.height * .8 : 60,
+          width: openBot ? MediaQuery.of(context).size.width * .8 : 60,
+          child: openBot
+              ? Container(
+                  color: Colors.white,
+                  child: ChatBot(
+                    bottomScroll: _scrollToBottom,
+                    toClose: handleCloseBot,
+                    scroller: _scrollController,
+                    messages: messages,
+                    handleMsg: handleMsg,
+                    boolval: openBot,
+                  ),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.chat),
+                  onPressed: () {
+                    setState(() {
+                      openBot = !openBot;
+                    });
+                  },
+                ),
+        ),
+        bottomNavigationBar:  Container(
           alignment: Alignment.center,
           color: Colors.blue,
-          height: 70,
+          height: 50,
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
