@@ -1,5 +1,6 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/ChatBot/chat_bot.dart';
@@ -25,7 +26,8 @@ class _HomePageState extends State<HomePage> {
   var curentWorkspaceShortBrief;
   late DialogFlowtter dialogFlowtter;
   var curentWorkspace;
-  final PersistentTabController _controllerforBottomPage = PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controllerforBottomPage =
+      PersistentTabController(initialIndex: 0);
 
   void handleFirstIntialData(val) {
     setState(() {
@@ -115,7 +117,7 @@ class _HomePageState extends State<HomePage> {
     handleCloseitNow();
   }
 
-  void handleCloseitNow(){
+  void handleCloseitNow() {
     setState(() {
       openBot = false;
     });
@@ -137,9 +139,16 @@ class _HomePageState extends State<HomePage> {
                 name: user?['Name'] ?? "")));
   }
 
+  void handleEnv() async {
+    await dotenv.load(
+      fileName: "assets/.env",
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+    handleEnv();
     handleInitialData();
   }
 
@@ -238,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
         ),
-        bottomNavigationBar:  Container(
+        bottomNavigationBar: Container(
           alignment: Alignment.center,
           color: Colors.blue,
           height: 50,

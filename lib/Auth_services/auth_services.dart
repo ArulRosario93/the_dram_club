@@ -527,15 +527,6 @@ class AuthServices {
     String res = "Error";
 
     try {
-      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
-        "Workspace": FieldValue.arrayUnion([
-          {
-            "Name": workspaceID,
-            "lastVisited": true,
-          }
-        ]),
-      });
-
       // assigning last visited false to all other workspaces of the user
       await FirebaseFirestore.instance
           .collection("Users")
