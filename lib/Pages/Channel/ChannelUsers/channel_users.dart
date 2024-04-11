@@ -13,16 +13,34 @@ class ChannelUsers extends StatelessWidget {
   final String userEmailID;
   final String workspaceDescription;
   const ChannelUsers(
-      {super.key, required this.channelName, required this.allUsers, required this.workSpaceID, required this.workspaceName, required this.userName, required this.userEmailID, required this.workspaceDescription});
+      {super.key,
+      required this.channelName,
+      required this.allUsers,
+      required this.workSpaceID,
+      required this.workspaceName,
+      required this.userName,
+      required this.userEmailID,
+      required this.workspaceDescription});
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      UserSearch(),
-      AddUserToWorkspace(allUsers: allUsers, workSpaceID: workSpaceID, workspaceName: workspaceName, userName: userName, userEmailID: userEmailID, workspaceDescription: workspaceDescription),
+      // UserSearch(),
+      AddUserToWorkspace(
+          allUsers: allUsers,
+          emailIDuser: userEmailID,
+          nameUser: userName,
+          workSpaceID: workSpaceID,
+          workspaceName: workspaceName,
+          userName: userName,
+          userEmailID: userEmailID,
+          workspaceDescription: workspaceDescription),
       const SizedBox(height: 10),
-      GoToSelectUsersChannel(allUsers: allUsers),
-      UserItem(),
+      GoToSelectUsersChannel(
+          allUsers: allUsers, emailID: userEmailID, name: userName),
+      for (var i = 0; i < allUsers.length; i++)
+        UserItem(
+            emailID: allUsers[i]["Email-ID"], username: allUsers[i]["Name"]),
       // UserItem(),
     ]);
   }

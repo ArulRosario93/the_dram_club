@@ -135,34 +135,6 @@ class _ChannelState extends State<Channel> {
                 fontWeight: FontWeight.w600, fontSize: 18),
           ),
         ),
-        floatingActionButton: selectedPage == 1
-            ? GestureDetector(
-                onTap: () => handleFloatButtonVisibility(),
-                child: AnimatedContainer(
-                    duration: Durations.extralong1,
-                    child: _isfloatVisible
-                        ? const Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FloatIcon(
-                                icon: Icon(Icons.drive_folder_upload_outlined,
-                                    color: Colors.white),
-                              ),
-                              SizedBox(height: 10),
-                              FloatIcon(
-                                  icon: Icon(Icons.add, color: Colors.white)),
-                            ],
-                          )
-                        : GestureDetector(
-                            onTap: () => handleFloatButtonVisibility(),
-                            child: const FloatIcon(
-                              icon: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
-                            ))),
-              )
-            : null,
         body: Column(
           children: [
             Row(

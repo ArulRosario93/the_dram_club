@@ -11,6 +11,7 @@ class ChatItem extends StatelessWidget {
   final String date;
   final String time;
   final String userEmailID;
+  final String name;
   const ChatItem(
       {super.key,
       required this.sameUser,
@@ -20,28 +21,12 @@ class ChatItem extends StatelessWidget {
       required this.msg,
       required this.sender,
       required this.time,
+      required this.name,
       required this.userEmailID});
 
   @override
   Widget build(BuildContext context) {
-    void handleUserProfile() {
-      // showModalBottomSheet<void>(
-      //   context: context,
-      //   scrollControlDisabledMaxHeightRatio: .8,
-      //   builder: (BuildContext context) {
-      //     return Container(
-      //       decoration: const BoxDecoration(
-      //         color: Colors.white,
-      //         borderRadius: BorderRadius.only(
-      //           topLeft: Radius.circular(20),
-      //           topRight: Radius.circular(20),
-      //         ),
-      //       ),
-      //       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-      //       child: const UserProfile(),
-      //     );
-      //   },
-      // );
+    void handleUserProfile(String emailID, String name) {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -57,90 +42,83 @@ class ChatItem extends StatelessWidget {
                 //       fontSize: 22,
                 //       fontWeight: FontWeight.w600),
                 // ),
-                content: const UserProfile(
+                content: UserProfile(
                   casualook: false,
+                  emailID: emailID,
+                  name: name
                 ),
               ));
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: sender == userEmailID
-          ? MainAxisAlignment.end
-          : MainAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: sender == userEmailID
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
-        sender == userEmailID
-            ? const SizedBox()
-            : Padding(
-                padding: const EdgeInsets.only(top: 20, left: 5),
-                child: GestureDetector(
-                  onTap: handleUserProfile,
-                  child: const CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.blue,
-                    backgroundImage: NetworkImage(
-                      "https://i.pinimg.com/236x/c7/e9/36/c7e9362f57ee015410dcf3dbb5f6178a.jpg",
+        // !samedate? ChatDate(date: date): const SizedBox(),
+        sender != userEmailID
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: GestureDetector(
+                      onTap: () => handleUserProfile(userEmailID, name),
+                      child: const CircleAvatar(
+                        radius: 15,
+                        backgroundColor: Colors.blue,
+                        backgroundImage: NetworkImage(
+                          "https://i.pinimg.com/236x/c7/e9/36/c7e9362f57ee015410dcf3dbb5f6178a.jpg",
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-        Column(
-          crossAxisAlignment: sender == userEmailID
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          children: [
-            // !samedate? ChatDate(date: date): const SizedBox(),
-            sender != userEmailID
-                ? Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: GestureDetector(
-                      onTap: handleUserProfile,
-                      child: Text("Arul Rosario",
+                      onTap:() => handleUserProfile(userEmailID, name),
+                      child: Text(userEmailID,
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w400,
                             color: Colors.grey.shade100,
                             fontSize: 12,
                           )),
                     ),
-                  )
-                : const SizedBox(),
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              margin: EdgeInsets.only(
-                right: 5,
-                left: 5,
-                top: !sameTime ? 3 : 0,
-              ),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: sender == userEmailID
-                    ? Colors.white
-                    : Colors.blue,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                msg,
-                style: GoogleFonts.montserrat(
-                    color: sender == userEmailID
-                        ? Colors.black
-                        : Colors.white,
-                    fontSize: 12),
-              ),
-            ),
-            !sameTime
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      time,
-                      style: GoogleFonts.montserrat(
-                          color: Colors.grey, fontSize: 10),
-                    ),
-                  )
-                : const SizedBox(),
-          ],
+                  ),
+                ],
+              )
+            : const SizedBox(),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          margin: EdgeInsets.only(
+            right: 5,
+            left: 35,
+            top: !sameTime ? 3 : 0,
+          ),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: sender == userEmailID ? Colors.white : Colors.blue,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            msg,
+            style: GoogleFonts.montserrat(
+                color: sender == userEmailID ? Colors.black : Colors.white,
+                fontSize: 12),
+          ),
         ),
+        !sameTime
+            ? Padding(
+                padding: const EdgeInsets.only(left: 38, right: 8),
+                child: Text(
+                  time,
+                  style:
+                      GoogleFonts.montserrat(color: Colors.grey, fontSize: 10),
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

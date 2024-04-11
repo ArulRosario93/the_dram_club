@@ -30,8 +30,6 @@ class _HomePageState extends State<HomePage> {
   var curentWorkspaceShortBrief;
   late DialogFlowtter dialogFlowtter;
   var curentWorkspace;
-  final PersistentTabController _controllerforBottomPage =
-      PersistentTabController(initialIndex: 0);
 
   void handleFirstIntialData(val) {
     setState(() {
@@ -43,7 +41,6 @@ class _HomePageState extends State<HomePage> {
         );
       }
       loading = false;
-      print(workspace);
     });
     // DialogAuthCredentials credentials = DialogAuthCredentials.fromJson(json);
     dialogFlowtter =
@@ -159,8 +156,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(allUsers ?? []);
-
     List<Widget> pages = [
       ChannelPage(
           userID: user?['Email-ID'] ?? "",
@@ -188,10 +183,17 @@ class _HomePageState extends State<HomePage> {
       ),
 
       //Direct Messages
-      DirectMessages(),
+      DirectMessages(
+        directMessage: user?["Direct-Messages"] ?? [],
+      ),
 
       // "Profile",
-      Profile()
+      Profile(
+        name: user?["Name"] ?? "",
+        emailID: user?["Email-ID"] ?? "",
+        status: user?["Status"] ?? "",
+        attandancePercentage: user?["Attandance-Record"] ?? 0,
+      )
     ];
 
     if (loading &&
@@ -205,7 +207,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        // extendBody: true,
+        extendBody: true,
+        resizeToAvoidBottomInset: true,
         // extendBodyBehindAppBar: true,
         drawer: DrawerMain(
           list: workspace,
@@ -214,7 +217,13 @@ class _HomePageState extends State<HomePage> {
         ),
         appBar: AppBar(
           title: Text(
-            curentWorkspaceShortBrief?['Name'] ?? "The Dram Club",
+            _selectedIndex == 3
+                ? "Profile"
+                : _selectedIndex == 2
+                    ? "Direct Messages"
+                    : _selectedIndex == 1
+                        ? "Form"
+                        : curentWorkspaceShortBrief?['Name'] ?? "The Dram Club",
             style: GoogleFonts.montserrat(),
           ),
           actions: [
@@ -227,38 +236,41 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 10)
           ],
         ),
-        floatingActionButton: AnimatedContainer(
-          duration: Durations.extralong1,
-          curve: Curves.easeInOut,
-          alignment: Alignment.bottomRight,
-          decoration: BoxDecoration(
-            // color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: openBot ? MediaQuery.of(context).size.height * .8 : 60,
-          width: openBot ? MediaQuery.of(context).size.width * .8 : 60,
-          child: openBot
-              ? Container(
-                  color: Colors.white,
-                  child: ChatBot(
-                    bottomScroll: _scrollToBottom,
-                    toClose: handleCloseBot,
-                    scroller: _scrollController,
-                    messages: messages,
-                    handleMsg: handleMsg,
-                    boolval: openBot,
-                  ),
-                )
-              : IconButton(
-                  icon: const Icon(Icons.chat),
-                  onPressed: () {
-                    setState(() {
-                      openBot = !openBot;
-                    });
-                  },
+        floatingActionButton: _selectedIndex == 0
+            ? AnimatedContainer(
+                duration: Durations.extralong1,
+                curve: Curves.easeInOut,
+                alignment: Alignment.bottomRight,
+                decoration: BoxDecoration(
+                  // color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-        ),
+                height: openBot ? MediaQuery.of(context).size.height * .5 : 60,
+                width: openBot ? MediaQuery.of(context).size.width * .9 : 60,
+                child: openBot
+                    ? Container(
+                        color: Colors.white,
+                        child: ChatBot(
+                          bottomScroll: _scrollToBottom,
+                          toClose: handleCloseBot,
+                          scroller: _scrollController,
+                          messages: messages,
+                          handleMsg: handleMsg,
+                          boolval: openBot,
+                        ),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.chat),
+                        onPressed: () {
+                          setState(() {
+                            openBot = !openBot;
+                          });
+                        },
+                      ),
+              )
+            : null,
         bottomNavigationBar: GNav(
+          backgroundColor: Colors.white,
           gap: 8.0,
           onTabChange: handlePage,
           // tabBackgroundColor: Colors.grey.shade50,

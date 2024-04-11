@@ -60,10 +60,9 @@ class ChatControllerChild extends StatelessWidget {
           // }
 
           return Column(
-            crossAxisAlignment:
-                data[index]["Email-ID"] == userEmailID
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
+            crossAxisAlignment: data[index]["Email-ID"] == userEmailID
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
             children: [
               !samedate ? ChatDate(date: timeStamp) : const SizedBox(),
               ChatItem(
@@ -73,6 +72,7 @@ class ChatControllerChild extends StatelessWidget {
                   sameTime: sameTime,
                   userEmailID: userEmailID,
                   sender: data[index]["Email-ID"],
+                  name: data[index]["Name"],
                   time: timeStamp.toDate().toString().substring(11, 16),
                   date: timeStamp.toDate().toString().substring(0, 10))
             ],

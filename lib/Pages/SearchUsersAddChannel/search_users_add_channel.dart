@@ -4,7 +4,13 @@ import 'package:the_dram_club/Pages/SearchUsersAdd/UserItemtoAdd/userItemAdd.dar
 
 class SearchUsersAddChannel extends StatefulWidget {
   final allUsers;
-  const SearchUsersAddChannel({super.key, required this.allUsers});
+  final String emailID;
+  final String name;
+  const SearchUsersAddChannel(
+      {super.key,
+      required this.allUsers,
+      required this.emailID,
+      required this.name});
 
   @override
   State<SearchUsersAddChannel> createState() => _SearchUsersAddChannelState();
@@ -50,6 +56,8 @@ class _SearchUsersAddChannelState extends State<SearchUsersAddChannel> {
             itemBuilder: (context, index) => UserItemAdd(
                 userName: widget.allUsers[index]["Name"],
                 userEmailID: widget.allUsers[index]["Email-ID"],
+                nameUser: widget.name,
+                emailUser: widget.emailID,
                 selectedUsers: handleSelectedUsers),
             itemCount: widget.allUsers.length,
           )),

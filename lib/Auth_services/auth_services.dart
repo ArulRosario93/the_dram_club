@@ -63,6 +63,7 @@ class AuthServices {
         "Email-ID": user.email,
         "UID": user.uid,
         "profilePic": "",
+        "Status": '',
         "Attandance-Record": 78,
         "Direct-Messages": [],
         "Leave-Record": "",
@@ -108,6 +109,7 @@ class AuthServices {
           "profilePic": user.photoURL,
           "Attandance-Record": 80,
           "Direct-Messages": [],
+          "Status": '',
           "Leave-Record": "",
           "Authentications": "Google",
           "Notifications": [],
@@ -772,6 +774,32 @@ class AuthServices {
     }
   }
 
+  Future<String> changeUserName(String emailID, String name) async {
+    String res = "Error";
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Name": name,
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  Future<String> changeUserStatus(String emailID, String status) async {
+    String res = "Error";
+    try {
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Status": status,
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<String> sendMsgChannel(String workspaceID, String channelID,
       String msg, String emailiD, String name) async {
     String res = "Error";
@@ -840,6 +868,114 @@ class AuthServices {
     return res;
   }
 
+  Future createDirectMessageRoom(
+    String emailID,
+    String name,
+    String emailID2,
+    String name2,
+  ) async {
+    String res = "Error";
+    try {
+      final roomID = const Uuid().v1();
+      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
+        "Direct-Messages": FieldValue.arrayUnion([
+          {
+            "Name": name2,
+            "Email-ID": emailID2,
+            "ID": roomID,
+          }
+        ])
+      });
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(emailID2)
+          .update({
+        "Direct-Messages": FieldValue.arrayUnion([
+          {
+            "Name": name,
+            "Email-ID": emailID,
+            "ID": roomID,
+          }
+        ])
+      });
+      await FirebaseFirestore.instance
+          .collection("Direct-Messages")
+          .doc(roomID)
+          .set({
+        "Msg": {
+          "Round1": [],
+          "roundCount": 0,
+          "currentRound": 1,
+        },
+      });
+      res = "Success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  Future sendDirectMessage(
+    String emailID,
+    String name,
+    String roomID,
+    String msg,
+  ) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Direct-Messages")
+          .doc(roomID)
+          .get()
+          .then((value) async => {
+                if (value.data()!["Msg"]["roundCount"] > 200)
+                  {
+                    await FirebaseFirestore.instance
+                        .collection("Direct-Messages")
+                        .doc(roomID)
+                        .set({
+                      "Msg": {
+                        "Round${value.data()!["currentRound"] + 1}":
+                            FieldValue.arrayUnion([
+                          {
+                            "Name": name,
+                            "msg": msg,
+                            "Email-ID": emailID,
+                            "Timestamp": Timestamp.now(),
+                          }
+                        ]),
+                        "roundCount": FieldValue.increment(1),
+                        "currentRound": FieldValue.increment(1)
+                      },
+                    }, SetOptions(merge: true))
+                  }
+                else
+                  {
+                    await FirebaseFirestore.instance
+                        .collection("Direct-Messages")
+                        .doc(roomID)
+                        .set({
+                      "Msg": {
+                        "Round${value.data()!["Msg"]["currentRound"]}":
+                            FieldValue.arrayUnion([
+                          {
+                            "Name": name,
+                            "msg": msg,
+                            "Email-ID": emailID,
+                            "Profile-Pic": "",
+                            "Timestamp": Timestamp.now(),
+                          }
+                        ]),
+                        "roundCount": FieldValue.increment(1)
+                      },
+                    }, SetOptions(merge: true))
+                  }
+              });
+    } catch (e) {
+      // print(e.toString());
+      return e.toString();
+    }
+  }
+
   Future getWorkspace(String ID) async {
     return await FirebaseFirestore.instance
         .collection("Workspace")
@@ -854,6 +990,13 @@ class AuthServices {
         .collection(channelID)
         .doc("Messages")
         .get();
+  }
+
+  Stream getDirectMessages(String roomID) {
+    return FirebaseFirestore.instance
+        .collection("Direct-Messages")
+        .doc(roomID)
+        .snapshots();
   }
 
   Future resetPassword(String email) async {

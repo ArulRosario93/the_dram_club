@@ -4,7 +4,9 @@ import 'package:the_dram_club/Utils/user_profile.dart';
 import 'package:vibration/vibration.dart';
 
 class UserItem extends StatelessWidget {
-  const UserItem({super.key});
+  final String emailID;
+  final String username;
+  const UserItem({super.key, required this.emailID, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,11 @@ class UserItem extends StatelessWidget {
                 //       fontSize: 22,
                 //       fontWeight: FontWeight.w600),
                 // ),
-                content: const UserProfile(casualook: true,),
+                content: UserProfile(
+                  casualook: true,
+                  emailID: emailID,
+                  name: username,
+                ),
               ));
     }
 
@@ -40,11 +46,11 @@ class UserItem extends StatelessWidget {
                 title: Text(
                   'Promote Arul Rosario?',
                   style: GoogleFonts.montserrat(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 content: Text(
-                    'Are you sure you want to promote Arul Rosario to Admin?', style: GoogleFonts.montserrat()),
+                    'Are you sure you want to promote Arul Rosario to Admin?',
+                    style: GoogleFonts.montserrat()),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -82,8 +88,13 @@ class UserItem extends StatelessWidget {
             ),
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             child: SizedBox(
-                height: MediaQuery.of(context).size.height * 7,
-                child: const UserProfile(casualook: true,)),
+              height: MediaQuery.of(context).size.height * 7,
+              child: UserProfile(
+                casualook: true,
+                emailID: emailID,
+                name: username,
+              ),
+            ),
           );
         },
       );
@@ -100,31 +111,37 @@ class UserItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(
-                      'https://media.istockphoto.com/id/1146517111/photo/taj-mahal-mausoleum-in-agra.jpg?s=612x612&w=0&k=20&c=vcIjhwUrNyjoKbGbAQ5sOcEzDUgOfCsm9ySmJ8gNeRk='),
+                Container(
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[300],
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    username[0] + username[1],
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Arul Rosario',
+                      username,
                       style: GoogleFonts.montserrat(),
                     ),
                     Text(
-                      'itsarrowhere380@gmail.com',
+                      emailID,
                       style: GoogleFonts.montserrat(color: Colors.grey[500]),
                     ),
                   ],
                 ),
               ],
             ),
-            Text(
-              'Admin',
-              style: GoogleFonts.montserrat(),
-            )
+            // Text(
+            //   'Admin',
+            //   style: GoogleFonts.montserrat(),
+            // )
           ],
         ),
       ),

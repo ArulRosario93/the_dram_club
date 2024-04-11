@@ -9,6 +9,8 @@ class AddUserToWorkspace extends StatelessWidget {
   final String userName;
   final String userEmailID;
   final String workspaceDescription;
+  final String emailIDuser;
+  final String nameUser;
   const AddUserToWorkspace(
       {super.key,
       required this.allUsers,
@@ -16,7 +18,9 @@ class AddUserToWorkspace extends StatelessWidget {
       required this.workspaceName,
       required this.userName,
       required this.userEmailID,
-      required this.workspaceDescription});
+      required this.workspaceDescription,
+      required this.emailIDuser,
+      required this.nameUser});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +33,8 @@ class AddUserToWorkspace extends StatelessWidget {
               workSpaceID: workSpaceID,
               userEmailID: userEmailID,
               userName: userName,
+              emailUser: emailIDuser,
+              nameUser: nameUser,
               workspaceDescription: workspaceDescription,
               workspaceName: workspaceName,
             ),

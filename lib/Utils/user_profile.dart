@@ -5,7 +5,13 @@ import 'package:vibration/vibration.dart';
 
 class UserProfile extends StatelessWidget {
   final bool casualook;
-  const UserProfile({super.key, required this.casualook});
+  final String emailID;
+  final String name;
+  const UserProfile(
+      {super.key,
+      required this.casualook,
+      required this.emailID,
+      required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +42,12 @@ class UserProfile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Arul Rosario',
+                  name,
                   style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold, fontSize: 18),
+                      fontWeight: FontWeight.bold, fontSize: 10),
                 ),
                 Text(
-                  'itsarrowhere380@gmail.com',
+                  emailID,
                   style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w500, fontSize: 13),
                 ),

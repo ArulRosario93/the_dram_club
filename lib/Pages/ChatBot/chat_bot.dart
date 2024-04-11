@@ -99,7 +99,7 @@ class _ChatBotState extends State<ChatBot> {
           ),
         )),
         Container(
-            alignment: Alignment.center,
+            // alignment: Alignment.bottomCenter,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),

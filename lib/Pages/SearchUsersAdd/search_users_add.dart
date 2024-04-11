@@ -10,6 +10,8 @@ class SearchUserAdd extends StatefulWidget {
   final String workSpaceID;
   final String workspaceName;
   final String userName;
+  final String emailUser;
+  final String nameUser;
   final String userEmailID;
   final String workspaceDescription;
   const SearchUserAdd(
@@ -19,6 +21,8 @@ class SearchUserAdd extends StatefulWidget {
       required this.workspaceName,
       required this.userName,
       required this.userEmailID,
+      required this.emailUser,
+      required this.nameUser,
       required this.workspaceDescription});
 
   @override
@@ -162,6 +166,8 @@ class _SearchUserAddState extends State<SearchUserAdd> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return UserItemAdd(
+                                nameUser: widget.nameUser,
+                                emailUser: widget.emailUser,
                                 userEmailID: filteredUsers[index]["Email-ID"],
                                 userName: filteredUsers[index]["Name"],
                                 selectedUsers: handleSelectedUsers,

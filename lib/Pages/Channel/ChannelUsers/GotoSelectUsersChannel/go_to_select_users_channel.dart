@@ -5,14 +5,22 @@ import 'package:the_dram_club/Pages/SearchUsersAddChannel/search_users_add_chann
 
 class GoToSelectUsersChannel extends StatelessWidget {
   final allUsers;
-  const GoToSelectUsersChannel({super.key, required this.allUsers});
+  final String emailID;
+  final String name;
+  const GoToSelectUsersChannel(
+      {super.key,
+      required this.allUsers,
+      required this.emailID,
+      required this.name});
 
   @override
   Widget build(BuildContext context) {
     void handlegotoSearchUserAdd() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SearchUsersAddChannel(allUsers: allUsers)),
+        MaterialPageRoute(
+            builder: (context) => SearchUsersAddChannel(
+                allUsers: allUsers, emailID: emailID, name: name)),
       );
     }
 
