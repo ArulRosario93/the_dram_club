@@ -141,6 +141,7 @@ class AuthServices {
           {
             "Name": workspaceName,
             "Role": role,
+            "RoleInt": 0, // 0 for admin
             "Description": description,
             "ID": id,
             "lastVisited": true,
