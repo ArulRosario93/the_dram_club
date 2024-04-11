@@ -1,8 +1,9 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:the_dram_club/Auth_services/auth_services.dart';
 import 'package:the_dram_club/Pages/ChatBot/chat_bot.dart';
 import 'package:the_dram_club/Pages/Home/ChannelPage/channel_page.dart';
@@ -249,37 +250,11 @@ class _HomePageState extends State<HomePage> {
         //           },
         //         ),
         // ),
-        bottomNavigationBar: DotNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: handlePage,
-          selectedItemColor: Colors.black,
-          dotIndicatorColor: Colors.black,
-          items: [
-            /// Home
-            DotNavigationBarItem(
-              unselectedColor: Colors.grey,
-              icon: Icon(Icons.home),
-            ),
-
-            /// Likes
-            DotNavigationBarItem(
-              unselectedColor: Colors.grey,
-              icon: Icon(Icons.favorite_border),
-            ),
-
-            // /// Search
-            // DotNavigationBarItem(
-            //   icon: Icon(Icons.search),
-            //   selectedColor: Colors.orange,
-            // ),
-
-            // /// Profile
-            // DotNavigationBarItem(
-            //   icon: Icon(Icons.person),
-            //   selectedColor: Colors.teal,
-            // ),
-          ],
-        ),
+        bottomNavigationBar: GNav(tabs: [
+          GButton(icon: Icons.home, text: 'Home'),
+          GButton(icon: Icons.format_align_center, text: 'Form'),
+          GButton(icon: Icons.person_2_rounded, text: 'Profile'),
+        ]),
         //  Container(
         //   alignment: Alignment.center,
         //   color: Colors.blue,
