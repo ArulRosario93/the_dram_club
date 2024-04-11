@@ -1,4 +1,5 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -155,7 +156,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print(allUsers ?? []);
-    List pages = [
+
+    List<Widget> pages = [
       ChannelPage(
           userID: user?['Email-ID'] ?? "",
           userName: user?['Name'] ?? "",
@@ -194,7 +196,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        extendBody: true,
+        // extendBody: true,
         // extendBodyBehindAppBar: true,
         drawer: DrawerMain(
           list: workspace,
@@ -216,86 +218,117 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 10)
           ],
         ),
-        floatingActionButton: AnimatedContainer(
-          duration: Durations.extralong1,
-          curve: Curves.easeInOut,
-          alignment: Alignment.bottomRight,
-          decoration: BoxDecoration(
-            // color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: openBot ? MediaQuery.of(context).size.height * .8 : 60,
-          width: openBot ? MediaQuery.of(context).size.width * .8 : 60,
-          child: openBot
-              ? Container(
-                  color: Colors.white,
-                  child: ChatBot(
-                    bottomScroll: _scrollToBottom,
-                    toClose: handleCloseBot,
-                    scroller: _scrollController,
-                    messages: messages,
-                    handleMsg: handleMsg,
-                    boolval: openBot,
-                  ),
-                )
-              : IconButton(
-                  icon: const Icon(Icons.chat),
-                  onPressed: () {
-                    setState(() {
-                      openBot = !openBot;
-                    });
-                  },
-                ),
+        // floatingActionButton: AnimatedContainer(
+        //   duration: Durations.extralong1,
+        //   curve: Curves.easeInOut,
+        //   alignment: Alignment.bottomRight,
+        //   decoration: BoxDecoration(
+        //     // color: Colors.white,
+        //     borderRadius: BorderRadius.circular(10),
+        //   ),
+        //   height: openBot ? MediaQuery.of(context).size.height * .8 : 60,
+        //   width: openBot ? MediaQuery.of(context).size.width * .8 : 60,
+        //   child: openBot
+        //       ? Container(
+        //           color: Colors.white,
+        //           child: ChatBot(
+        //             bottomScroll: _scrollToBottom,
+        //             toClose: handleCloseBot,
+        //             scroller: _scrollController,
+        //             messages: messages,
+        //             handleMsg: handleMsg,
+        //             boolval: openBot,
+        //           ),
+        //         )
+        //       : IconButton(
+        //           icon: const Icon(Icons.chat),
+        //           onPressed: () {
+        //             setState(() {
+        //               openBot = !openBot;
+        //             });
+        //           },
+        //         ),
+        // ),
+        bottomNavigationBar: DotNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: handlePage,
+          selectedItemColor: Colors.black,
+          dotIndicatorColor: Colors.black,
+          items: [
+            /// Home
+            DotNavigationBarItem(
+              unselectedColor: Colors.grey,
+              icon: Icon(Icons.home),
+            ),
+
+            /// Likes
+            DotNavigationBarItem(
+              unselectedColor: Colors.grey,
+              icon: Icon(Icons.favorite_border),
+            ),
+
+            // /// Search
+            // DotNavigationBarItem(
+            //   icon: Icon(Icons.search),
+            //   selectedColor: Colors.orange,
+            // ),
+
+            // /// Profile
+            // DotNavigationBarItem(
+            //   icon: Icon(Icons.person),
+            //   selectedColor: Colors.teal,
+            // ),
+          ],
         ),
-        bottomNavigationBar: Container(
-          alignment: Alignment.center,
-          color: Colors.blue,
-          height: 50,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () => handlePage(0),
-                    child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          // border: Border.all(color: Colors.black, width: 2),
-                        ),
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(Icons.home)),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () => handlePage(1),
-                    child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(60),
-                            bottomRight: Radius.circular(40),
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(Icons.request_page)),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                      color: Colors.blue,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      child: const Icon(Icons.person)),
-                ),
-              ]),
-        ),
+        //  Container(
+        //   alignment: Alignment.center,
+        //   color: Colors.blue,
+        //   height: 50,
+        //   child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       children: [
+        //         Flexible(
+        //           flex: 1,
+        //           child: InkWell(
+        //             onTap: () => handlePage(0),
+        //             child: Container(
+        //                 decoration: const BoxDecoration(
+        //                   color: Colors.white,
+        //                   // border: Border.all(color: Colors.black, width: 2),
+        //                 ),
+        //                 alignment: Alignment.center,
+        //                 padding: const EdgeInsets.all(10),
+        //                 child: const Icon(Icons.home)),
+        //           ),
+        //         ),
+        //         Flexible(
+        //           flex: 1,
+        //           child: InkWell(
+        //             onTap: () => handlePage(1),
+        //             child: Container(
+        //                 decoration: const BoxDecoration(
+        //                   color: Colors.blue,
+        //                   borderRadius: BorderRadius.only(
+        //                     topLeft: Radius.circular(60),
+        //                     bottomRight: Radius.circular(40),
+        //                   ),
+        //                 ),
+        //                 alignment: Alignment.center,
+        //                 padding: const EdgeInsets.all(10),
+        //                 child: const Icon(Icons.request_page)),
+        //           ),
+        //         ),
+        //         Flexible(
+        //           flex: 1,
+        //           child: Container(
+        //               color: Colors.blue,
+        //               alignment: Alignment.center,
+        //               padding: const EdgeInsets.all(10),
+        //               child: const Icon(Icons.person)),
+        //         ),
+        //       ]),
+        // ),
         body: pages[_selectedIndex]);
   }
 }
