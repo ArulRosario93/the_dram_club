@@ -37,9 +37,16 @@ class DrawerMain extends StatelessWidget {
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
 
-    void handleChangeWorkspace(String emailID, String workspaceID) async {
+    void handleChangeWorkspace(
+        String emailID,
+        String workspaceID,
+        String workspaceName,
+        String workspaceDescription,
+        String Role,
+        int RoleInt) async {
       // Add your logic here
-      String res = await AuthServices().changeWorkspace(workspaceID, emailID);
+      String res = await AuthServices().changeWorkspace(workspaceID, emailID,
+          workspaceName, workspaceDescription, Role, RoleInt);
 
       if (res == "Success") {
         showMsg("Workspace Changed");
@@ -95,37 +102,43 @@ class DrawerMain extends StatelessWidget {
                       ),
                     for (var i in list)
                       ListTile(
-                          leading: Text(
-                            i['Name'][0] + i['Name'][1],
-                            style: GoogleFonts.montserrat(color: Colors.white),
-                          ),
-                          title: Text(
-                            i['Name'],
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 3),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          trailing: Icon(
-                            Icons.more_horiz_rounded,
-                            color: i["lastVisited"] == true
-                                ? Colors.white70
-                                : Colors.grey,
-                          ),
-                          tileColor: i["lastVisited"] == true
-                              ? Colors.grey[700]
-                              : const Color.fromARGB(255, 15, 15, 15),
-                          splashColor: Colors.grey[800],
-                          subtitle: Text(
-                            i['Description'],
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white70),
-                          ),
-                          onTap: () => handleChangeWorkspace(emailID, i["ID"])),
+                        leading: Text(
+                          i['Name'][0] + i['Name'][1],
+                          style: GoogleFonts.montserrat(color: Colors.white),
+                        ),
+                        title: Text(
+                          i['Name'],
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w600, color: Colors.white),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        trailing: Icon(
+                          Icons.more_horiz_rounded,
+                          color: i["lastVisited"] == true
+                              ? Colors.white70
+                              : Colors.grey,
+                        ),
+                        tileColor: i["lastVisited"] == true
+                            ? Colors.grey[700]
+                            : const Color.fromARGB(255, 15, 15, 15),
+                        splashColor: Colors.grey[800],
+                        subtitle: Text(
+                          i['Description'],
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white70),
+                        ),
+                        onTap: () => handleChangeWorkspace(
+                            emailID,
+                            i["ID"],
+                            i["Name"],
+                            i["Description"],
+                            i["Role"],
+                            i["RoleInt"]),
+                      )
                     // const SizedBox(height: 20),
                   ],
                 ),

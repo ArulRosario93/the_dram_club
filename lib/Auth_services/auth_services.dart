@@ -63,7 +63,7 @@ class AuthServices {
         "Email-ID": user.email,
         "UID": user.uid,
         "profilePic": "",
-        "Attandance-Record": "",
+        "Attandance-Record": 78,
         "Direct-Messages": [],
         "Leave-Record": "",
         "Notifications": [],
@@ -106,7 +106,7 @@ class AuthServices {
           "Email-ID": user.email,
           "UID": user.uid,
           "profilePic": user.photoURL,
-          "Attandance-Record": "",
+          "Attandance-Record": 80,
           "Direct-Messages": [],
           "Leave-Record": "",
           "Authentications": "Google",
@@ -377,21 +377,6 @@ class AuthServices {
         ])
       });
 
-      //add user to the workspace
-      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
-        "Notifications": FieldValue.arrayUnion([
-          {
-            "Name": workspaceName,
-            "ID": workspaceID,
-            "Description": workspaceDescription,
-            "notificationID": notificationID,
-            "Data-Joined": Timestamp.now(),
-            "Note": "You've joined this workspace",
-            "Type": "Joined-Workspace",
-          }
-        ])
-      });
-
       await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
         "Workspace": FieldValue.arrayUnion([
           {
@@ -399,6 +384,7 @@ class AuthServices {
             "Description": workspaceDescription,
             "ID": workspaceID,
             "Role": role,
+            "RoleInt": roleInt,
             "lastVisited": false,
           }
         ])
@@ -413,20 +399,6 @@ class AuthServices {
             "Email-ID": emailID,
             "Name": name,
             "Data-Joined": Timestamp.now(),
-          }
-        ])
-      });
-
-      await FirebaseFirestore.instance.collection("Users").doc(emailID).update({
-        "Notifications": FieldValue.arrayRemove([
-          {
-            "Name": workspaceName,
-            "ID": workspaceID,
-            "Description": workspaceDescription,
-            "notificationID": notificationID,
-            "Data-Joined": Timestamp.now(),
-            "Note": "You've been invited to join this workspace",
-            "Type": "Request-Workspace",
           }
         ])
       });
@@ -523,7 +495,14 @@ class AuthServices {
     return res;
   }
 
-  Future changeWorkspace(String workspaceID, String emailID) async {
+  Future changeWorkspace(
+    String workspaceID,
+    String emailID,
+    String workspaceName,
+    String workspaceDescription,
+    String Role,
+    int RoleInt,
+  ) async {
     String res = "Error";
 
     try {
@@ -546,6 +525,7 @@ class AuthServices {
                   "Role": i["Role"],
                   "Description": i["Description"],
                   "ID": i["ID"],
+                  "RoleInt": i["RoleInt"],
                   "lastVisited": true,
                 }
               ]),
@@ -558,6 +538,7 @@ class AuthServices {
                 {
                   "Name": i["Name"],
                   "Role": i["Role"],
+                  "RoleInt": i["RoleInt"],
                   "Description": i["Description"],
                   "ID": i["ID"],
                   "lastVisited": false,
@@ -566,6 +547,37 @@ class AuthServices {
             });
           }
         }
+
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(emailID)
+            .update({
+          "Workspace": FieldValue.arrayUnion([
+            {
+              "Name": workspaceName,
+              "Role": Role,
+              "Description": workspaceDescription,
+              "ID": workspaceID,
+              "RoleInt": RoleInt,
+              "lastVisited": true,
+            }
+          ]),
+        });
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(emailID)
+            .update({
+          "Workspace": FieldValue.arrayRemove([
+            {
+              "Name": workspaceName,
+              "Role": Role,
+              "Description": workspaceDescription,
+              "ID": workspaceID,
+              "RoleInt": RoleInt,
+              "lastVisited": false,
+            }
+          ]),
+        });
       });
 
       res = "Success";
