@@ -43,7 +43,9 @@ class SignUp extends StatelessWidget {
       return AuthServices().userExist(email);
     }
 
-    void handleSignUnEmailandPass() async {
+    handleSignUnEmailandPass() async {
+      print("FUNCTION CALLED");
+
       if (password.text.isEmpty ||
           emailAdress.text.isEmpty ||
           confirmPassword.text.isEmpty) {
@@ -56,11 +58,11 @@ class SignUp extends StatelessWidget {
         return;
       }
 
-      if (await handleUserExits(emailAdress.text)) {
-        String res = await AuthServices().userAuthentication(emailAdress.text);
-        showsnackbar("User already exists. Try Signing in with $res");
-        return;
-      }
+      // if (await handleUserExits(emailAdress.text)) {
+      //   String res = await AuthServices().userAuthentication(emailAdress.text);
+      //   showsnackbar("User already exists. Try Signing in with $res");
+      //   return;
+      // }
 
       if (password.text != confirmPassword.text) {
         showsnackbar("Password does not match");
@@ -71,6 +73,8 @@ class SignUp extends StatelessWidget {
         showsnackbar("Password must be atleast 8 characters long");
         return;
       }
+
+      print("STARTED");
 
       String res = await AuthServices()
           .signUpWithEmailAndPassword(emailAdress.text.trim(), password.text);

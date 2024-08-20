@@ -11,7 +11,6 @@ import 'package:the_dram_club/Pages/Home/ChannelPage/channel_page.dart';
 import 'package:the_dram_club/Pages/Home/Drawer/drawer.dart';
 import 'package:the_dram_club/Pages/LeaveForm/leave_form.dart';
 import 'package:the_dram_club/Pages/Notifications/notification.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:the_dram_club/Pages/Profile/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -278,7 +277,11 @@ class _HomePageState extends State<HomePage> {
           color: Colors.black,
           activeColor: Colors.black,
           tabs: const [
-            GButton(icon: Icons.home, text: 'Home'),
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+              style: GnavStyle.oldSchool,
+            ),
             GButton(icon: Icons.format_align_center, text: 'Form'),
             GButton(icon: Icons.message_rounded, text: 'Chats'),
             GButton(icon: Icons.person_2_rounded, text: 'Profile'),

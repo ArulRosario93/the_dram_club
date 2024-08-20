@@ -28,7 +28,7 @@ class Authentication extends StatelessWidget {
               ),
             );
           }
-          // return LoginPage();
+
           return const GetStarted();
         },
       );
