@@ -28,28 +28,28 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^4.15.9
+  cloud_firestore: ^5.3.0
   cupertino_icons: ^1.0.6
   dialog_flowtter: 0.2.0-nullsafety.0
   dot_navigation_bar: ^1.0.2
-  firebase_auth: ^4.17.9
-  firebase_core: ^2.27.1
+  firebase_auth: ^5.2.0
+  firebase_core: ^3.4.0
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
   google_fonts: ^6.2.1
   google_nav_bar: ^5.0.6
-  google_sign_in: ^5.2.1
+  google_sign_in: ^6.2.1
   lottie: ^3.1.0
   percent_indicator: ^4.2.3
-  persistent_bottom_nav_bar: ^5.0.2
+  persistent_bottom_nav_bar: ^6.2.1
   swipe_widget: ^0.0.2+1
-  syncfusion_flutter_datepicker: ^25.1.39
+  syncfusion_flutter_datepicker: ^24.2.6
   uuid: ^4.4.0
-  vibration: ^1.8.4
+  vibration: ^2.0.0
 
 dev_dependencies:
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
 
